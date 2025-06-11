@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Portfolio - Camille Carraco</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <img src="./carre_en_image.png" align="left" height="95" alt="Logo du portfolio" class="background-image"/>
+        <nav class="navbar">
+            <ul>
+                <li><a href="#accueil">Accueil</a></li>
+                <li class="dropdown">
+                    <button class="dropbtn">Projets ▾</button>
+                    <div class="dropdown-content">
+                        <a href="1.html">Première année</a>
+                        <a href="2.html">Deuxième année</a>
+                        <a href="3.html">Troisième année</a>
+                    </div>
+                </li>
+                <li><a href="./bilan.html">Bilan</a></li>
+                <li><a href="./contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="accueil">
+            <div id="propo" style="width: 95.4%; max-width: none; margin: 1.5rem 0; padding: 1.8rem 2rem; background: #e6e8ea; border-radius: 14px; box-shadow: 0 2px 10px #0001; color: #223355;">
+                <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 2rem; justify-content: center;">
+                    <img src="./index/portrait.jpg" alt="Portrait de Camille" style="width: 180px; height: 180px; object-fit: cover; border-radius: 50%; box-shadow: 0 1px 6px #0002; border: 3px solid #3a6ea5;">
+                    <div style="flex: 1 1 320px; min-width: 220px;">
+                        <h1 style="font-size: 1.6rem; margin-bottom: 0.2em; color: #1a2a4d;">Bienvenue sur mon portfolio</h1>
+                        <h2 style="color: #3a6ea5; margin-bottom: 0.7em; font-size: 1.15rem;">À propos de moi</h2>
+                        <p style="font-size: 1.05rem; line-height: 1.6; text-align: justify; margin-bottom: 0.8em; color: #223355;">
+                            Je m'appelle <strong>Camille</strong>, étudiante en <b>1<sup>ère</sup> année de BUT Science des données</b> à Niort.<br>
+                            Engagée dans la <strong>Marine Nationale</strong>, j'ai développé l'esprit d'équipe et la rigueur.<br>
+                            Organisée, persévérante et motivée, j'aime relever des défis et travailler en équipe.<br>
+                            J'apprécie la <b>résolution de problèmes</b> et l'innovation.<br>
+                            Dans mon temps libre, je souhaite apprendre la <strong>clarinette</strong> et partager des moments avec mes proches.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>Mes passions</h2>
+            <div class="cartes-passions" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <div class="carte-passion" style="background: #DFF2E1; border-radius: 12px; box-shadow: 0 2px 8px #0001; width: 300px; padding: 1.5rem; display: flex; flex-direction: column; align-items: center;">
+                    <img src="./index/musique.png" alt="Musique" class="projet-image" style="width: 100%; border-radius: 8px; object-fit: cover; height: 120px;">
+                    <h3>Musique</h3>
+                    <div class="projet-details" id="details-4" style="display: block;">
+                        <p style="text-align: justify;">La musique occupe une place importante dans ma vie. J'aime découvrir de nouveaux styles.</p>
+                    </div>
+                </div>
+                <div class="carte-passion" style="background: #F2EDDF; border-radius: 12px; box-shadow: 0 2px 8px #0001; width: 300px; padding: 1.5rem; display: flex; flex-direction: column; align-items: center;">
+                    <img src="./index/militaire.JPG" alt="Engagement militaire" class="projet-image" style="width: 100%; border-radius: 8px; object-fit: cover; height: 120px;">
+                    <h3>Engagement militaire</h3>
+                    <div class="projet-details" id="details-5" style="display: block;">
+                        <p style="text-align: justify;">Mon engagement dans la Marine Nationale m'apporte énormément au quotidien.</p>
+                    </div>
+                </div>
+                <div class="carte-passion" style="background: #DFE4F2; border-radius: 12px; box-shadow: 0 2px 8px #0001; width: 300px; padding: 1.5rem; display: flex; flex-direction: column; align-items: center;">
+                    <img src="./index/sport.jpg" alt="Sport" class="projet-image" style="width: 100%; border-radius: 8px; object-fit: cover; height: 120px;">
+                    <h3>Sport</h3>
+                    <div class="projet-details" id="details-6" style="display: block;">
+                        <p style="text-align: justify;">Le sport occupe une place essentielle dans ma vie. Il me permet de rester en forme, de relever des défis.</p>
+                    </div>
+                </div>
+                <div class="carte-passion" style="background: #F2DFE5; border-radius: 12px; box-shadow: 0 2px 8px #0001; width: 300px; padding: 1.5rem; display: flex; flex-direction: column; align-items: center;">
+                    <img src="./index/cuisine.jpg" alt="Cuisine" class="projet-image" style="width: 100%; border-radius: 8px; object-fit: cover; height: 120px;">
+                    <h3>Cuisine</h3>
+                    <div class="projet-details" id="details-7" style="display: block;">
+                        <p style="text-align: justify;">La cuisine est pour moi un moment de créativité et de partage. J'aime expérimenter de nouvelles recettes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div id="pied">
+            <div>Camille Carraco</div>
+            <div style="height: 0.7em;"></div>
+            <div>Portfolio personnel - Étudiant en Science des données</div>
+        </div>
+    </footer>
+</body>
+</html>
