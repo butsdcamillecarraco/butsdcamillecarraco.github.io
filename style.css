@@ -82,7 +82,7 @@ list-style : none;
     background-color: #155a6e; /* anciennement #1b6198 */
 }
 .propo a{
-    color: #d8eef4; /* anciennement #e6e8ea */
+    color: #d8eef4;
 }
 
 h2 {
@@ -135,7 +135,7 @@ header{
 
 /* Intro / présentation */
 .propo, .intro-card {
-    background: var(--card-light);
+    background: linear-gradient(135deg, #165a72 0%, #0f3b4b 100%); /* anciennement #e6e8ea */;
     color: var(--text-dark);
     padding: 1.8rem 2rem;
     border-radius: 14px;
