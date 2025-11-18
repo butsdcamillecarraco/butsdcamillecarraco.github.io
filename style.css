@@ -41,7 +41,7 @@ nav ul li {
     margin: 0 18px;
 }
 nav a {
-    color: #d8eef4; /* anciennement #f1faee (plus neutre) */
+    color: var(--muted);
     text-decoration: none;
     font-weight: 500;
     font-size: 1.1rem;
@@ -113,20 +113,21 @@ button:hover {
     --surface: #0f3a4a;
     --surface-2: #071726;
     --card-light: #f3f7f9;
-    --muted: #d8eef4;
+    --muted: #ffffff; /* texte principal blanc */
     --accent: #2ed0b1;
     --accent-deep: #165a72;
-    --text-dark: #071726;
+    --text-dark: #d7ecff;
     --glass: rgba(255,255,255,0.02);
     --soft-shadow: rgba(2,6,23,0.20);
     --card-tint-1: rgba(46,208,177,0.04);
     --card-tint-2: rgba(255,255,255,0.015);
+    --max-width: 1100px; /* nouvelle variable pour centrage du contenu */
 }
 
 /* Harmonisation des éléments principaux */
 body{
     background: var(--bg);
-    color: var(--muted);
+    color: var(--muted); /* texte global blanc */
 }
 
 header{
@@ -207,7 +208,7 @@ header{
 .carte-passion .projet-details p { color: var(--text-dark); text-align: justify; }
 
 /* Ajustements divers pour harmonisation */
-.propo a { color: var(--muted); }
+.propo a { color: var(--text-dark); }
 button, .en-savoir-plus {
     border-radius: 8px;
     transition: background .18s ease, color .18s ease, transform .12s ease;
@@ -305,7 +306,7 @@ button:hover, .en-savoir-plus:hover { background-color: var(--accent); color: #f
 }
 
 .contact-item a {
-    color: white;
+    color: var(--muted);
     text-decoration: none;
 }
 
@@ -315,7 +316,7 @@ table {
     width: 97%;
     margin: 20px 0;
     background: rgba(255,255,255,0.02); /* moins dur que blanc */
-    color: #cfe6ef;                     /* anciennement #163853 */
+    color: var(--text-dark);            /* texte sombre sur fond clair du tableau */
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(2,6,23,0.25);
@@ -433,7 +434,7 @@ footer, #pied, footer #pied {
 }
 
 .dropdown-content a {
-    color: #0b2a36; /* anciennement #163853 */
+    color: #0b2a36; /* conserve texte sombre pour contraste */
     padding: 12px 22px;
     text-decoration: none;
     display: block;
@@ -480,11 +481,11 @@ footer, #pied, footer #pied {
 
 /* règle globale de secours pour les <p> */
 p {
-    color: var(--muted);
+    color: var(--muted); /* texte blanc par défaut */
     margin: 0 0 1rem 0;
 }
 
-/* texte de l'intro (fond clair) */
+/* texte de l'intro (fond clair) reste sombre */
 .intro-text {
     color: var(--text-dark);
     font-size: 1.05rem;
@@ -492,7 +493,7 @@ p {
     text-align: justify;
 }
 
-/* descriptions dans les cartes de passion */
+/* descriptions dans les cartes de passion (fond discret clair) restent sombres */
 .detail-text {
     color: var(--text-dark);
     text-align: justify;
