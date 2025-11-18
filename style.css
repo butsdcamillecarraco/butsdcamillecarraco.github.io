@@ -2,19 +2,19 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;  
-	background: #163853;
-    color: white;
+	background: #0b1e27; /* anciennement #163853 */
+    color: #e6eef4;      /* anciennement white */
 }
 
 header {
-    background: #163853;
+    background: rgba(255,255,255,0.02); /* moins massif que #163853 */
 	text-align: right;
     padding: 20px;
     font-family: 'Segoe UI', Arial, sans-serif;
 }
 
 nav a:hover {
-    color: #39e6c6;
+    color: #2ed0b1; /* anciennement #39e6c6 (accent plus doux) */
 }
 .background-image {
   position: absolute;
@@ -41,7 +41,7 @@ nav ul li {
     margin: 0 18px;
 }
 nav a {
-    color: #f1faee;
+    color: #d8eef4; /* anciennement #f1faee (plus neutre) */
     text-decoration: none;
     font-weight: 500;
     font-size: 1.1rem;
@@ -55,7 +55,7 @@ a {
 
 section {
     padding: 20px;
-    background: #25608b;
+    background: #0f3a4a; /* anciennement #25608b */
     width: 97%;
     margin: 2.8px;
     margin-bottom: 30px;
@@ -64,8 +64,8 @@ section {
 }
 
 div#pied{
-    background: #163853;
-    color: white;
+    background: #071726; /* anciennement #163853 */
+    color: #cfe6ef;      /* anciennement white */
     padding: 10px;
     width: 97%;
 	text-align: center;
@@ -79,11 +79,10 @@ list-style : none;
 
 
 .propo{
-    background-color: #1b6198;
+    background-color: #155a6e; /* anciennement #1b6198 */
 }
 .propo a{
-    color: #e6e8ea;
-    text-decoration: none;
+    color: #d8eef4; /* anciennement #e6e8ea */
 }
 
 h2 {
@@ -98,14 +97,14 @@ input, textarea, button {
 }
 
 button {
-    background-color: #1873b2;
-    color: #e6e8ea;
+    background-color: #165a72; /* anciennement #1873b2 */
+    color: #d8eef4;            /* anciennement #e6e8ea */
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #39e6c6;
-        color: #e6e8ea;
+    background-color: #2ed0b1; /* anciennement #39e6c6 */
+    color: #e6e8ea;
 }
 
 /* Style pour la section Projets */
@@ -126,7 +125,7 @@ button:hover {
 .projet-image {
     object-fit: cover;
     border-radius: 10px;
-    box-shadow: 0 2px 8px #ccc;
+    box-shadow: 0 2px 8px rgba(2,6,23,0.20); /* remplace le #ccc par une ombre sombre subtile */
     width: 45%;
     height: 400px;          /* fixe une hauteur identique */   
 }
@@ -136,11 +135,11 @@ button:hover {
 .projet-details {
     display: none;
     margin-top: 10px;
-    color: black;
-    background: #e6e8ea;
+    color: #071726;       /* anciennement black (texte sombre sur fond clair) */
+    background: #f3f7f9;  /* anciennement #e6e8ea */
     padding: 15px;
     border-radius: 8px;
-    box-shadow: 0 1px 4px #ddd; 
+    box-shadow: 0 1px 4px rgba(2,6,23,0.06);
 }
 .projet-row.even .projet-image { order: 2; }
 .projet-row.even .projet-content { order: 1; }
@@ -150,9 +149,9 @@ button:hover {
 .en-savoir-plus {
     margin-top: 10px;
     padding: 6px 16px;
-    background: #e6e8ea;
-    color: #39e6c6;
-    border: none;
+    background: transparent; /* plus discret */
+    color: #2ed0b1;          /* accent doux */
+    border: 1px solid rgba(46,208,177,0.14);
     border-radius: 5px;
     cursor: pointer;
 }
@@ -167,21 +166,21 @@ button:hover {
 }
 
 .contact-item {
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    background: linear-gradient(135deg, #1f6c7a 0%, #114b57 100%); /* moins saturé que le bleu vif */
     padding: 2rem;
     border-radius: 15px;
     text-align: center;
-    color: white;
+    color: #eaf6f4;
     transition: transform 0.3s ease;
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 8px 25px rgba(2,6,23,0.30);
 }
 
 .contact-item:nth-child(2) {
-    background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+    background: linear-gradient(135deg, #165a72 0%, #0f3b4b 100%); /* variante harmonisée */
 }
 
 .contact-item:nth-child(3) {
-    background: linear-gradient(135deg,  #3b82f6 0%, #1d4ed8 100%);
+    background: linear-gradient(135deg, #1f6c7a 0%, #114b57 100%);
 }
 
 .contact-item:hover {
@@ -202,17 +201,17 @@ table {
     border-collapse: collapse;
     width: 97%;
     margin: 20px 0;
-    background: #fff;
-    color: #163853;
+    background: rgba(255,255,255,0.02); /* moins dur que blanc */
+    color: #cfe6ef;                     /* anciennement #163853 */
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 8px #ccc;
+    box-shadow: 0 2px 8px rgba(2,6,23,0.25);
     font-size: 1rem;
 }
 
 thead {
-    background: #25608b;
-    color: #fff;
+    background: #0f3a4a; /* anciennement #25608b */
+    color: #d8eef4;      /* anciennement #fff */
 }
 
 th, td {
@@ -221,11 +220,11 @@ th, td {
 }
 
 tbody tr:nth-child(even) {
-    background: #f2f6fa;
+    background: rgba(255,255,255,0.01); /* subtile */
 }
 
 tbody tr:hover {
-    background: #e0e7ef;
+    background: rgba(255,255,255,0.03);
 }
 
 th {
@@ -234,25 +233,17 @@ th {
 }
 
 .bilan-card {
-    background: #1b6198;
+    background: #155a6e; /* anciennement #1b6198 */
     border-radius: 15px;
-    box-shadow: 0 2px 8px #1b3a5a44;
+    box-shadow: 0 2px 8px rgba(2,6,23,0.22);
     padding: 30px;
     margin-bottom: 30px;
 }
 
 footer, #pied, footer #pied {
-    background: #163853;
-    color: white;
-    padding: 12px 0;
-    width: 100%;
-    text-align: center;
-    position: static;
-    bottom: 0;
-    left: 0;
-    font-size: 1rem;
-    border-top: 2px solid #25608b;
-    margin-top: 40px;
+    background: transparent; /* moins lourd */
+    color: #cfe6ef;          /* anciennement white */
+    border-top: 2px solid #0f3a4a; /* anciennement #25608b */
 }
 
 /* Responsive pour les tableaux */
@@ -282,7 +273,7 @@ footer, #pied, footer #pied {
 
 /* Menu projets harmonisé et barre de navigation modernisée */
 .navbar {
-    background-color: #163853;
+    background-color: rgba(255,255,255,0.02); /* anciennement #163853 */
     font-family: 'Segoe UI', Arial, sans-serif;
     display: flex;
     align-items: center;
@@ -290,33 +281,17 @@ footer, #pied, footer #pied {
     padding: 0 24px;
     gap: 10px;
     min-height: 60px;
-    box-shadow: 0 2px 8px #1b3a5a22;
+    box-shadow: 0 2px 8px rgba(2,6,23,0.14);
 }
 
 .navbar a, .dropdown .dropbtn {
-    font-size: 1.1rem;
-    color: #f1faee;
-    text-align: center;
-    padding: 12px 20px;
-    text-decoration: none;
-    font-weight: 500;
-    background: none;
-    border: none;
-    border-radius: 8px;
-    transition: color 0.2s, background 0.2s, box-shadow 0.2s;
-    margin: 0 2px;
-    cursor: pointer;
-    outline: none;
-    box-shadow: none;
-    display: flex;
-    align-items: center;
-    gap: 6px;
+    color: #d8eef4; /* anciennement #f1faee */
 }
 
 .navbar a:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
-    background-color: #25608b;
-    color: #39e6c6;
-    box-shadow: 0 2px 8px #1b3a5a33;
+    background-color: #0f3a4a; /* anciennement #25608b */
+    color: #2ed0b1;            /* anciennement #39e6c6 */
+    box-shadow: 0 2px 8px rgba(2,6,23,0.20);
 }
 
 .dropdown {
@@ -330,7 +305,7 @@ footer, #pied, footer #pied {
     position: absolute;
     right: 0;
     top: 110%;
-    background-color: #e6e8ea;
+    background-color: #f3f7f9; /* anciennement #e6e8ea */
     min-width: 180px;
     box-shadow: 0 8px 24px #1b3a5a33;
     z-index: 20;
@@ -345,7 +320,7 @@ footer, #pied, footer #pied {
 }
 
 .dropdown-content a {
-    color: #163853;
+    color: #0b2a36; /* anciennement #163853 */
     padding: 12px 22px;
     text-decoration: none;
     display: block;
@@ -359,7 +334,7 @@ footer, #pied, footer #pied {
 }
 
 .dropdown-content a:hover, .dropdown-content a:focus {
-    background-color: #39e6c6;
+    background-color: #2ed0b1; /* anciennement #39e6c6 */
     color: #fff;
 }
 
