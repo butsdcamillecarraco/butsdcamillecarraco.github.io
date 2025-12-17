@@ -374,7 +374,7 @@ table {
     width: 97%;
     margin: 20px 0;
     background: rgba(255,255,255,0.02); /* moins dur que blanc */
-    color: var(--text-dark);            /* texte sombre sur fond clair du tableau */
+    color: var(--muted);
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 2px 8px rgba(2,6,23,0.25);
@@ -405,11 +405,17 @@ th {
 }
 
 .bilan-card {
-    background: #155a6e; /* anciennement #1b6198 */
-    border-radius: 15px;
-    box-shadow: 0 2px 8px rgba(2,6,23,0.22);
-    padding: 30px;
-    margin-bottom: 30px;
+    background: linear-gradient(135deg, var(--surface) 0%, var(--accent-deep) 100%);
+    color: var(--muted);
+    border-left: 4px solid var(--accent);
+    border-radius: 14px;
+    box-shadow: 0 12px 28px rgba(15,40,24,0.25);
+    padding: 28px 24px;
+    margin: 26px 0;
+}
+.bilan-card h3 {
+    color: var(--accent);
+    margin-top: 0;
 }
 
 footer, #pied, footer #pied {
