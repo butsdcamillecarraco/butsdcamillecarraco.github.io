@@ -68,7 +68,7 @@ a {
 
 section {
     padding: 20px;
-    background: linear-gradient(180deg, rgba(26,61,46,0.5), rgba(255,255,255,0.01));
+    background: linear-gradient(180deg, rgba(22,58,87,0.5), rgba(255,255,255,0.01));
     border-left: 4px solid var(--accent);
     box-shadow: 0 8px 24px var(--soft-shadow);
 }
@@ -115,31 +115,31 @@ input, textarea, button {
 }
 
 button {
-    background-color: #165a72; /* anciennement #1873b2 */
-    color: #d8eef4;            /* anciennement #e6e8ea */
+    background-color: var(--accent-deep);
+    color: var(--muted);
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #2ed0b1; /* anciennement #39e6c6 */
-    color: #e6e8ea;
+    background-color: var(--accent);
+    color: var(--card-light);
 }
 
 /* Palette inspirée du template : vert foncé, orange, blanc */
 :root{
-    --bg: #0f2818; /* vert très foncé (fond principal) */
-    --surface: #1a3d2e; /* vert moyen (cartes) */
-    --surface-2: #0a1410; /* presque noir (footer) */
-    --card-light: #ffffff; /* blanc pur (cartes claires) */
-    --muted: #ffffff; /* texte blanc */
-    --accent: #ff6b35; /* orange vif (accent) */
-    --accent-deep: #1a5f4a; /* vert profond (boutons/titres) */
-    --text-dark: #0f2818; /* texte sombre sur fonds clairs */
-    --orange-light: #ffb380; /* orange clair pour variantes */
-    --green-light: #2d7a5e; /* vert clair pour variantes */
+    --bg: #0f2a44;         /* fond principal -> bleu profond */
+    --surface: #163a57;    /* surface cartes -> bleu moyen */
+    --surface-2: #08121a;  /* presque noir (footer) */
+    --card-light: #ffffff;  /* blanc pur (cartes claires) */
+    --muted: #ffffff;      /* texte principal clair */
+    --accent: #f2c94c;     /* accent -> jaune doré */
+    --accent-deep: #1f4b56; /* accent profond -> bleu sombre */
+    --text-dark: #0f2818;   /* texte sombre sur fonds clairs (inchangé) */
+    --yellow-light: #fde9a8;/* variante jaune clair */
+    --blue-light: #4a90e2;  /* variante bleu clair */
     --glass: rgba(255,255,255,0.02);
-    --soft-shadow: rgba(15,40,24,0.20);
-    --card-tint-1: rgba(255,107,53,0.08);
+    --soft-shadow: rgba(8,18,24,0.20);
+    --card-tint-1: rgba(242,201,76,0.08); /* tint jaune */
     --card-tint-2: rgba(255,255,255,0.015);
     --max-width: 1100px; /* nouvelle variable pour centrage du contenu */
 }
@@ -160,14 +160,14 @@ header{
     color: var(--muted);
     border: none;
     border-top: 4px solid var(--accent);
-    box-shadow: 0 12px 32px rgba(15,40,24,0.25);
+    box-shadow: 0 12px 32px rgba(8,18,24,0.25);
 }
 .intro-card .portrait {
     width: 180px;
     height: 180px;
     object-fit: cover;
     border-radius: 50%;
-    box-shadow: 0 8px 28px rgba(255,107,53,0.20);
+    box-shadow: 0 8px 28px rgba(242,201,76,0.20);
     border: 4px solid var(--accent);
 }
 .intro-card h1 {
@@ -195,10 +195,10 @@ header{
     width: 300px;
     padding: 1.25rem;
     border-radius: 12px;
-    background: linear-gradient(180deg, rgba(26,61,46,0.65), rgba(10,20,16,0.7));
-    border: 1px solid rgba(255,107,53,0.15);
+    background: linear-gradient(180deg, rgba(22,58,87,0.65), rgba(8,18,24,0.7));
+    border: 1px solid rgba(242,201,76,0.15);
     border-top: 3px solid var(--accent);
-    box-shadow: 0 10px 26px rgba(15,40,24,0.30);
+    box-shadow: 0 10px 26px rgba(8,18,24,0.30);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -206,7 +206,7 @@ header{
 }
 .carte-passion:hover {
     border-color: var(--accent);
-    background: linear-gradient(180deg, rgba(26,61,46,0.85), rgba(10,20,16,0.8));
+    background: linear-gradient(180deg, rgba(22,58,87,0.85), rgba(8,18,24,0.8));
 }
 .carte-passion h3 { color: var(--accent); }
 
@@ -226,7 +226,7 @@ header{
     width: 100%;
     margin-top: 0.6rem;
     background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,107,53,0.18);
+    border: 1px solid rgba(242,201,76,0.18);
     border-radius: 10px;
     padding: 12px 14px;
     box-shadow: 0 6px 18px rgba(15,40,24,0.18);
@@ -265,7 +265,7 @@ button:hover, .en-savoir-plus:hover {
     background-color: transparent;
     color: var(--accent);
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(255,107,53,0.25);
+    box-shadow: 0 6px 16px rgba(242,201,76,0.25);
 }
 
 /* Style pour la section Projets */
@@ -317,14 +317,14 @@ button:hover, .en-savoir-plus:hover {
     padding: 6px 16px;
     background: transparent;
     color: var(--accent);
-    border: 1px solid rgba(255,107,53,0.18);
+    border: 1px solid rgba(242,201,76,0.18);
     border-radius: 8px;
     cursor: pointer;
 }
 .en-savoir-plus:hover {
     background-color: transparent;
     color: var(--accent);
-    box-shadow: 0 6px 16px rgba(255,107,53,0.25);
+    box-shadow: 0 6px 16px rgba(242,201,76,0.25);
     transform: translateY(-2px);
 }
 
@@ -490,7 +490,7 @@ footer, #pied, footer #pied {
 .navbar a:hover, .navbar .dropbtn:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
     color: var(--accent);
     border-bottom-color: var(--accent);
-    background: rgba(255,107,53,0.08);
+    background: rgba(242,201,76,0.08);
 }
 
 .dropdown {
