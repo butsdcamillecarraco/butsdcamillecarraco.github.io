@@ -1,0 +1,907 @@
+# -*- coding: utf-8 -*-
+"""
+Application de traitement des fichiers CSV et intégration avec Power BI.
+"""
+
+import pandas as pd
+import json
+import re
+import tkinter as tk
+from tkinter import scrolledtext, filedialog, messagebox
+import os
+import time
+import requests
+from datetime import date
+from pywinauto import Application
+from datetime import datetime
+import datetime
+
+# ======== Variables globales ========
+df_Acc = None
+df_BD = None
+
+# ======== Fonctions utilitaires ========
+def afficher_text(message):
+    """Affiche un message dans la zone de texte."""
+    zone_texte.config(state='normal')
+    zone_texte.insert(tk.END, message + "\n")
+    zone_texte.config(state='disabled')
+    zone_texte.see(tk.END)
+
+def convertir_taille(taille):
+    """Convertit une taille en cm."""
+    try:
+        if isinstance(taille, str):
+            taille = taille.replace(',', '.').strip()
+        taille = float(taille)
+        return int(round(taille * 100)) if taille < 10 else int(round(taille))
+    except Exception:
+        return None
+
+def convertir_annees_naissance(date_naissance):
+    """Extrait l'année de naissance."""
+    try:
+        match = re.search(r'(19|20)\d{2}', str(date_naissance))
+        return match.group(0) if match else None
+    except Exception:
+        return None
+    
+def convertir_heure(date_str):
+    try:
+        date = pd.to_datetime(date_str, errors='coerce', dayfirst=True)
+        if pd.notna(date):
+            return date.strftime('%H:%M:%S')
+    except Exception:
+        return ""
+    return ""
+
+def convertir_date(date_str):
+    try:
+        pass  # Replace with the code you want to execute
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        date = pd.to_datetime(date_str, errors='coerce', dayfirst=True)
+        if pd.notna(date):
+            return date.strftime('%d/%m/%Y')
+    except Exception:
+        return ""
+    return ""
+
+def extraire_heure(date_str):
+    try:
+        date = pd.to_datetime(date_str, errors='coerce', dayfirst=True)
+        if pd.notna(date):
+            return date.strftime('%H:%M')
+    except Exception:
+        return ""
+    return ""
+
+def get_tranche_age(age):
+    if pd.isna(age):
+        return ""  # laisser vide si âge inconnu
+    elif age < 15:
+        return "<15"
+    elif 15 <= age <= 24:
+        return "15-24"
+    elif 25 <= age <= 29:                                       
+        return "25-29"
+    elif 30 <= age <= 34:
+        return "30-34"
+    elif 35 <= age <= 39:
+        return "35-39"
+    elif 40 <= age <= 44:
+        return "40-44"
+    elif 45 <= age <= 49:
+        return "45-49"
+    elif 50 <= age <= 54:
+        return "50-54"
+    elif 55 <= age <= 59:
+        return "55-59"
+    elif 60 <= age <= 64:
+        return "60-64"
+    elif 65 <= age <= 69:
+        return "65-69"
+    elif 70 <= age <= 74:
+        return "70-74"
+    elif age >= 75:
+        return "75+"
+    else:
+        return ""
+   
+   # Définition de la fonction de catégorisation
+def categorie_imc(imc):
+    if pd.isnull(imc):
+        return "Inconnu"
+    elif imc < 18.5:
+        return "Maigreur"
+    elif 18.5 <= imc < 25:
+        return "Corpulence normale"
+    elif 25 <= imc < 30:
+        return "Surpoids"
+    elif 30 <= imc < 35:
+        return "Obésité modérée"
+    elif 35 <= imc < 40:
+        return "Obésité sévère"
+    else:
+        return "Obésité morbide"
+    
+import datetime
+
+def get_tranche_heure(heure):
+    if pd.isna(heure) or not isinstance(heure, str) or heure.strip() == "":
+        return ""
+    # Accepte aussi les heures au format "HH:MM"
+    try:
+        if len(heure.strip()) == 5:
+            heure_time = datetime.datetime.strptime(heure.strip(), "%H:%M").time()
+        else:
+            heure_time = datetime.datetime.strptime(heure.strip(), "%H:%M:%S").time()
+    except ValueError:
+        return ""
+
+    if heure_time < datetime.time(6, 0, 0):
+        return "Aube"
+    elif heure_time <= datetime.time(12, 0, 0):
+        return "Matin"
+    elif heure_time <= datetime.time(14, 0, 0):
+        return "Midi"
+    elif heure_time <= datetime.time(18, 0, 0):
+        return "Après-midi"
+    else:
+        return "Soir"
+
+def convertir_annees_naissance(date_naissance):
+    try:
+        date_str = str(date_naissance)
+        match = re.search(r'(19|20)\d{2}', date_str)
+        if match:
+            return match.group(0)
+        else:
+            return ""
+    except Exception:
+        return ""
+
+def expand_json_list(cell):
+    try:
+        items = json.loads(cell.replace("'", '"')) if isinstance(cell, str) else []
+        result = {}
+        for item in items:
+            if isinstance(item, dict) and 'nom' in item:
+                result[item['nom']] = 1
+        return pd.Series(result)
+    except Exception:
+        return pd.Series()
+
+def extraire_champ_json(json_str, champ):
+    try:
+        if pd.isna(json_str) or not str(json_str).strip():
+            return ""
+        data = json.loads(json_str)
+        if isinstance(data, list) and len(data) > 0:
+            return data[0].get(champ, "")
+        return ""
+    except Exception:
+        return ""
+
+def extraire_parenthese_theme(texte, theme):
+    if pd.isna(texte):
+        return ""
+    pattern = re.compile(re.escape(theme) + r'\s*\((.*?)\)', re.IGNORECASE)
+    match = pattern.search(texte)
+    if match:
+        return match.group(1).strip()
+    else:
+        return ""    
+    
+def extraire_jeu_sorties(texte):
+    jeu = extraire_parenthese_theme(texte, 'Jeu intérieur')
+    sorties = extraire_parenthese_theme(texte, 'Sorties')
+    if jeu and sorties:
+        return f"{jeu}, {sorties}"
+    elif jeu:
+        return jeu
+    elif sorties:
+        return sorties
+    else:
+        return ""
+
+def supprimer_sauts_ligne_texte(texte):
+    if isinstance(texte, str):
+        return re.sub(r'[\r\n]+', ' ', texte)
+    return texte
+
+def extraire_jardinage_bricolage(texte):
+    if pd.isna(texte):
+        return ""
+    pattern = re.compile(r'(Jardinage, Bricolage, Activités ménagères|Jardinage, Bricolage|Activités ménagères)\s*\((.*?)\)', re.IGNORECASE)
+    match = pattern.search(texte)
+    if match:
+        return match.group(2).strip()
+    if re.search(r'Jardinage', texte, re.IGNORECASE) and re.search(r'Bricolage', texte, re.IGNORECASE):
+        return "Jardinage, Bricolage"
+    elif re.search(r'Jardinage', texte, re.IGNORECASE):
+        return "Jardinage"
+    elif re.search(r'Bricolage', texte, re.IGNORECASE):
+        return "Bricolage"
+    elif re.search(r'Activités ménagères', texte, re.IGNORECASE):
+        return "Activités ménagères"
+    return ""
+
+def convertir_taille(taille):
+    if pd.isna(taille):
+        return None
+    try:
+        if isinstance(taille, str):
+            taille = taille.replace(',', '.').strip()
+            val = float(taille)
+        else:
+            val = float(taille)
+        if val >= 100:
+            return int(round(val))
+        elif 0 < val < 10:
+            return int(round(val * 100))
+        else:
+            return None
+    except Exception:
+        return None
+    
+def filtrer_ecran(valeur):
+    if pd.isna(valeur):
+        return ""
+    ecrans_autorises = {"télévision", "ordi"}
+    items = [item.strip().lower() for item in str(valeur).split(",")]
+    filtres = [item for item in items if item in ecrans_autorises]
+    return ", ".join(filtres) if filtres else ""
+
+
+def supprimer_sauts_ligne_texte(texte):
+    """Supprime les sauts de ligne dans un texte."""
+    return re.sub(r'[\r\n]+', ' ', texte) if isinstance(texte, str) else texte
+
+
+import base64
+import requests
+import pandas as pd
+from io import BytesIO
+from tkinter import messagebox
+
+# Informations GitHub
+GITHUB_TOKEN = "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"
+GITHUB_USER = "butsdcamillecarraco"
+REPO_NAME = "Travail.SAE"
+BRANCH = "main"
+
+def dfs_to_xlsx_base64(dfs_dict: dict):
+    """
+    Prend un dictionnaire {nom_feuille: DataFrame} et renvoie le fichier Excel encodé en base64.
+    """
+    buffer = BytesIO()
+    with pd.ExcelWriter(buffer, engine='xlsxwriter') as writer:
+        for sheet_name, df in dfs_dict.items():
+            df.to_excel(writer, sheet_name=sheet_name, index=False)
+    buffer.seek(0)
+    return base64.b64encode(buffer.read()).decode('utf-8')
+
+def push_excel_to_github(dfs_dict, filename):
+    """
+    Envoie un fichier Excel (avec plusieurs feuilles) sur GitHub.
+    """
+    content_b64 = dfs_to_xlsx_base64(dfs_dict)
+
+    url = f"https://api.github.com/repos/{GITHUB_USER}/{REPO_NAME}/contents/{filename}"
+
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+
+    # Vérifier si le fichier existe déjà (pour obtenir le SHA)
+    response = requests.get(url, headers=headers)
+    data = {
+        "message": f"Ajout automatique du fichier {filename}",
+        "content": content_b64,
+        "branch": BRANCH
+    }
+
+    if response.status_code == 200:
+        data["sha"] = response.json().get("sha")
+
+    # Envoi PUT vers GitHub
+    put_response = requests.put(url, headers=headers, json=data)
+
+    if put_response.status_code in [200, 201]:
+        messagebox.showinfo("Succès", f"✅ Fichier {filename} envoyé sur GitHub avec succès.")
+    else:
+        messagebox.showerror("Erreur", f"❌ Erreur {put_response.status_code} : {put_response.text}")
+
+def exporter_vers_excel():
+    """
+    Exporte les données traitées vers un fichier Excel avec deux feuilles,
+    puis l’envoie sur GitHub avec un tag explicite.
+    """
+    global df_Acc, df_BD
+    if df_Acc is None or df_BD is None or df_Acc.empty or df_BD.empty:
+        messagebox.showerror("Erreur", "Les données n'ont pas été traitées.")
+        return
+
+    dfs_dict = {
+        "Accidents": df_Acc,
+        "BD": df_BD
+    }
+
+    tag = "📊 Résultats traités AcVC (Accidents & BD)"
+    fichier_nom = "Resultats_Traites.xlsx"
+
+    # Envoi vers GitHub avec nom de feuille et tag
+    push_excel_to_github_avec_tag(dfs_dict, fichier_nom, tag)
+
+def push_excel_to_github_avec_tag(dfs_dict, filename, tag):
+    """
+    Enregistre plusieurs DataFrames dans un même fichier Excel avec plusieurs feuilles,
+    encode le fichier en base64, et l’envoie sur GitHub avec un message tagué.
+    """
+    excel_buffer = BytesIO()
+    with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
+        for sheet_name, df in dfs_dict.items():
+            df.to_excel(writer, sheet_name=sheet_name, index=False)
+
+    content_b64 = base64.b64encode(excel_buffer.getvalue()).decode('utf-8')
+
+    url = f"https://api.github.com/repos/{GITHUB_USER}/{REPO_NAME}/contents/{filename}"
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+
+    response = requests.get(url, headers=headers)
+    data = {
+        "message": f"{tag} | Ajout de {filename}",
+        "content": content_b64,
+        "branch": BRANCH
+    }
+
+    if response.status_code == 200:
+        data["sha"] = response.json().get("sha")
+
+    put_response = requests.put(url, headers=headers, json=data)
+
+    if put_response.status_code in [200, 201]:
+        messagebox.showinfo("Succès", f"✅ {filename} envoyé avec succès.\nTag : {tag}")
+    else:
+        messagebox.showerror("Erreur", f"❌ Erreur {put_response.status_code} : {put_response.text}")
+
+
+
+def ouvrir_power_bi():
+    """Ouvre le fichier Power BI."""
+    try:
+        fichier_pbix = os.path.abspath("travail.pbix")
+        if os.path.exists(fichier_pbix):
+            os.startfile(fichier_pbix)
+            afficher_text("Power BI Desktop est en cours de lancement.")
+        else:
+            messagebox.showerror("Erreur", f"Fichier Power BI (.pbix) introuvable :\n{fichier_pbix}")
+    except Exception as e:
+        messagebox.showerror("Erreur", f"Une erreur est survenue : {e}")
+        
+#------------------- Fonction ajouté ---------------------#
+
+def importer_plusieurs_fichiers_excel():
+    """
+    Permet de sélectionner et importer plusieurs fichiers Excel,
+    affiche leur contenu, ajoute un log, puis les pousse sur GitHub.
+    """
+    fichiers = filedialog.askopenfilenames(
+        title="Importer plusieurs fichiers Excel",
+        filetypes=[("Fichiers Excel", "*.xlsx *.xls")]
+    )
+
+    if fichiers:
+        for fichier in fichiers:
+            try:
+                df = pd.read_excel(fichier)
+                nom_fichier = os.path.basename(fichier)
+
+                # Log personnalisé en fonction du nom
+                if "age" in nom_fichier.lower():
+                    tag = "👵 Démographie par âge"
+                elif "csp" in nom_fichier.lower():
+                    tag = "💼 Catégories socio-pro"
+                elif "fporsoc" in nom_fichier.lower():
+                    tag = "🏛️ Fonction publique / INSEE"
+                else:
+                    tag = "📁 Autre fichier"
+
+                afficher_text(f"{tag} → {nom_fichier} chargé.")
+                afficher_text(f"Colonnes : {', '.join(df.columns)}")
+                afficher_text(f"Premières lignes :\n{df.head()}\n")
+
+                # On modifie temporairement le message de commit en fonction du tag
+                push_fichier_excel_to_github_avec_tag(fichier, nom_fichier, tag)
+
+            except Exception as e:
+                messagebox.showerror("Erreur", f"Erreur avec {fichier} : {e}")
+
+def push_fichier_excel_to_github(path, github_filename):
+    """Push un fichier Excel local vers GitHub avec son nom."""
+    content_b64 = fichier_to_xlsx_base64(path)
+    url = f"https://api.github.com/repos/{GITHUB_USER}/{REPO_NAME}/contents/{github_filename}"
+
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+
+    # Vérifie si le fichier existe déjà sur GitHub
+    response = requests.get(url, headers=headers)
+    data = {
+        "message": f"Ajout automatique du fichier {github_filename}",
+        "content": content_b64,
+        "branch": BRANCH
+    }
+
+    if response.status_code == 200:
+        data["sha"] = response.json().get("sha")
+
+    put_response = requests.put(url, headers=headers, json=data)
+
+    if put_response.status_code in [200, 201]:
+        messagebox.showinfo("Succès", f"✅ Fichier {github_filename} envoyé sur GitHub.")
+    else:
+        messagebox.showerror("Erreur", f"❌ Erreur {put_response.status_code} : {put_response.text}")
+
+def fichier_to_xlsx_base64(path):
+    """Lit un fichier Excel local et le renvoie encodé en base64."""
+    with open(path, "rb") as f:
+        content = f.read()
+    return base64.b64encode(content).decode('utf-8')
+
+def push_fichier_excel_to_github_avec_tag(path, github_filename, tag):
+    """
+    Push un fichier Excel vers GitHub avec un message de commit personnalisé selon le tag.
+    """
+    content_b64 = fichier_to_xlsx_base64(path)
+    url = f"https://api.github.com/repos/{GITHUB_USER}/{REPO_NAME}/contents/{github_filename}"
+
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+
+    response = requests.get(url, headers=headers)
+    data = {
+        "message": f"{tag} | Ajout du fichier {github_filename}",
+        "content": content_b64,
+        "branch": BRANCH
+    }
+
+    if response.status_code == 200:
+        data["sha"] = response.json().get("sha")
+
+    put_response = requests.put(url, headers=headers, json=data)
+
+    if put_response.status_code in [200, 201]:
+        messagebox.showinfo("Succès", f"✅ {github_filename} envoyé avec succès.\nTag : {tag}")
+    else:
+        messagebox.showerror("Erreur", f"❌ Erreur {put_response.status_code} : {put_response.text}")
+
+
+#----------------------------Fin du teste---------------------#
+    
+# ======== Fonctions principales ========
+
+def charger_fichier_excel():
+    """Charge le fichier Excel."""
+    global df_Acc, df_BD
+    fichier = filedialog.askopenfilename(title="Charger fichier Excel MAVIE", filetypes=[("Fichiers Excel", "*.xlsx *.xls")])
+    if fichier:
+        try:
+            df_BD = pd.read_excel(fichier, sheet_name='BD_Quest')
+            df_Acc = pd.read_excel(fichier, sheet_name='Accident')
+            afficher_text(f"Fichier Excel chargé avec {len(df_BD)} lignes dans BD et {len(df_Acc)} lignes dans Accident.")
+        except Exception as e:
+            messagebox.showerror("Erreur", f"Erreur lors du chargement du fichier Excel : {e}")
+
+def lancer_traitement():
+    """Effectue le traitement des données."""
+    global df_Acc, df_BD
+    if df_Acc is None or df_BD is None:
+        messagebox.showwarning("Fichiers manquants", "Veuillez d'abord charger les deux fichiers.")
+        return
+
+    try:
+        df_Acc = df_Acc.drop([col for col in df_Acc.columns if col.startswith("Colonne")], axis=1, errors='ignore')
+        df_BD = df_BD.drop([col for col in df_BD.columns if col.startswith("Colonne")], axis=1, errors='ignore')
+        
+        afficher_text("Traitement des données en cours...")
+        
+        # Suppression des doublons
+
+        df_Acc.drop_duplicates(inplace=True)
+        df_BD.drop_duplicates(inplace=True)
+
+        # Harmonisation des noms de colonnes
+
+        df_Acc.rename(columns={
+            "VOLONTAIRE N°": "id_volontaire",
+            "Colonne1": "colonne1",
+            "ANNEE DE NAISSANCE": "annee_naissance",
+            "GENRE": "genre",
+            "DATE DE REMPLISSAGE": "date_remplissage",
+            "Dans les deux dernier mois, avez-vous été victime d'un accident de la vie courante ?": "victime_accident_recente",
+            "À quelle date a eu lieu l'accident de la vie courante ?": "date_accident",
+            "À quelle heure ?": "heure_accident",
+            "Un tiers est-il partiellement ou entièrement responsable de l'accident ?": "tiers_responsable",
+            "Dans quel état de fatigue vous sentiez-vous au moment de l'accident ?": "etat_fatigue",
+            "Quel est le code postal du lieu de l'accident ?  ": "code_postal_lieu_accident",
+            "Sélectionnez la commune de l'accident": "commune_accident",
+            "Où a eu lieu l'accident ?": "lieu_accident",
+            "Précisez le lieu de l'accident :": "precisions_lieu_1",
+            "Précisez le lieu de l'accident :_1": "precisions_lieu_2",
+            "Précisez le lieu de l'accident :_2": "precisions_lieu_3",
+            "Précisez le lieu de l'accident :_3": "precisions_lieu_4",
+            "Précisez le lieu de l'accident :_4": "precisions_lieu_5",
+            "Précisez le lieu de l'accident :_5": "precisions_lieu_6",
+            "Précisez le lieu de l'accident :_6": "precisions_lieu_7",
+            "Précisez le lieu de l'accident :_7": "precisions_lieu_8",
+            "Précisez le lieu de l'accident :_8": "precisions_lieu_9",
+            "Précisez le lieu de l'accident :_9": "precisions_lieu_10",
+            "Que faisiez-vous au moment de l'accident ?": "activite_moment_accident",
+            "Précisez l'activité pratiquée :": "activite_precisee_1",
+            "Précisez l'activité pratiquée :_10": "activite_precisee_2",
+            "Précisez l'activité pratiquée :_11": "activite_precisee_3",
+            "Précisez l'activité pratiquée :_12": "activite_precisee_4",
+            "Précisez l'activité pratiquée :_13": "activite_precisee_5",
+            "Précisez l'activité pratiquée :_14": "activite_precisee_6",
+            "Quel sport pratiquiez-vous au moment de l'accident ?": "sport_moment_accident",
+            "Précisez le sport pratiqué :": "sport_precise_1",
+            "Précisez le sport pratiqué :_15": "sport_precise_2",
+            "Précisez le sport pratiqué :_16": "sport_precise_3",
+            "Précisez le sport pratiqué :_17": "sport_precise_4",
+            "Précisez le sport pratiqué :_18": "sport_precise_5",
+            "Précisez le sport pratiqué :_19": "sport_precise_6",
+            "Précisez le sport pratiqué :_20": "sport_precise_7",
+            "Précisez le sport pratiqué :_21": "sport_precise_8",
+            "Précisez le sport pratiqué :_22": "sport_precise_9",
+            "Précisez le sport pratiqué :_23": "sport_precise_10",
+            "Précisez le sport pratiqué :_24": "sport_precise_11",
+            "Précisez le sport pratiqué :_25": "sport_precise_12",
+            "Précisez le sport pratiqué :_26": "sport_precise_13",
+            "Précisez le sport pratiqué :_27": "sport_precise_14",
+            "Précisez le sport pratiqué :_28": "sport_precise_15",
+            "Précisez le sport pratiqué :_29": "sport_precise_16",
+            "De quel type d'accident s'agissait-il ?": "type_accident",
+            "Dans quelle direction êtes-vous tombé(e) ?": "direction_chute",
+            "Précisez d'où vous êtes tombée(e) :": "origine_chute",
+            "Précisez par quoi (allergie, intoxication ou corrosion) : ": "cause_speciale",
+            "Le surmenage est-il arrivé au cours d'un :": "moment_surmenage",
+            "Vous êtes-vous blessé(e) dans l'accident ?": "blessure_oui_non",
+            "Quelle(s) blessure(s) l'accident a-t-il provoqué ?": "type_blessures",
+            "Avez-vous reçu des soins après l'accident ?": "soins_apres_accident",
+            "Par qui avez-vous reçu ces soins ?": "soins_fournis_par",
+            "Combien de jours avez-vous été hospitalisé(e) ?": "jours_hospitalisation",
+            "Êtes-vous toujours hospitalisé(e) ?": "encore_hospitalise",
+            "Avez-vous été en arrêt de travail suite à cet accident ?": "arret_travail",
+            "Combien de jours (consécutifs) avez-vous été en arrêt de travail ?": "jours_arret_travail",
+            "Êtes-vous toujours en arrêt de travail ?": "encore_arret_travail",
+            "Au cours des 48 heures qui ont suivi l'accident, avez-vous été limité(e) dans vos activités habituelles ?": "limitation_activite_48h",
+            "L'accident a-t-il entraîné un arrêt de la pratique de sport (entraînement ou compétition) ?": "arret_sport",
+            "Combien de temps a duré cet arrêt de la pratique de sport ?": "duree_arret_sport",
+            "Êtes-vous toujours en arrêt de la pratique de sport ?": "encore_arret_sport",
+            "Pouvez-vous décrire  en quelques mots le déroulement de l'accident et ses conséquences ?": "description_accident"
+        }, inplace=True)
+
+        df_BD.rename(columns={
+            "VOLONTAIRE N°": "volontaire_num",
+            "ANNEE DE NAISSANCE": "annee_naissance",
+            "GENRE": "genre",
+            "À quel âge êtes-vous arrivé(e) en France ?  ": "age_arrive_france",
+            "DATE DE REMPLISSAGE": "date_remplissage",
+            "Où êtes-vous né(e) ?": "lieu_naissance",
+            "Merci de préciser votre pays de naissance": "pays_naissance",
+            "Quelle est votre situation actuelle par rapport à l'emploi ?": "situation_emploi",
+            "Quelle est votre profession actuelle ou la dernière profession que vous avez exercée ?": "profession",
+            "Quel est le diplôme le plus élevé que vous avez obtenu ?": "diplome_max",
+            "Avez-vous pratiqué une activité physique ou sportive au cours des 12 derniers mois ?": "activite_physique",
+            "Vous êtes :": "statut",
+            "Quel est votre poids actuel en kg ?": "poids_kg",
+            "Quelle est votre taille actuelle en cm ?": "taille_cm",
+            "Sur cette échelle de 1 à 10, en moyenne au cours de la semaine passée, comment vous êtes-vous senti sur le plan physique ?": "score_physique",
+            "Sur cette échelle de 1 à 10, en moyenne au cours de la semaine passée, comment vous êtes-vous senti sur le plan mental ?": "score_mental",
+            "Au cours des 12 derniers mois, avez-vous eu un ou des accidents ?": "accidents_12m",
+            "Souffrez-vous d'une déficience ou d'un handicap ?": "handicap",
+            "Pour quel(s) mouvement(s) de la vie quotidienne présentez-vous des difficultés ?": "difficulte_mvmt_0",
+            "Pour quel(s) mouvement(s) de la vie quotidienne présentez-vous des difficultés ?_1": "difficulte_mvmt_1",
+            "Pour quel(s) mouvement(s) de la vie quotidienne présentez-vous des difficultés ?_2": "difficulte_mvmt_2",
+            "Pour quel(s) mouvement(s) de la vie quotidienne présentez-vous des difficultés ?_3": "difficulte_mvmt_3",
+            "Pour quel(s) mouvement(s) de la vie quotidienne présentez-vous des difficultés ?_4": "difficulte_mvmt_4",
+            "Pour quel(s) mouvement(s) de la vie quotidienne présentez-vous des difficultés ?_5": "difficulte_mvmt_5",
+            "Vous êtes :_6": "statut_6",
+            "Combien fumez-vous ou fumiez-vous de cigarettes, cigarillos, cigares ou pipes par jour ?": "nb_cigarettes_jour",
+            "Avez-vous consommé du cannabis (haschisch, marijuana, herbe, joint, shit) au cours des 30 derniers jours ?": "cannabis_30j",
+            "Combien de fois, au cours des 30 derniers jours, en avez-vous consommé ?": "freq_cannabis_30j",
+            "A quelle fréquence consommez-vous de l'alcool (Vin, bière, cidre,apéritif, digestif, …) ?": "freq_alcool",
+            "Combien de verres contenant de l'alcool consommez-vous un jour typique où vous buvez ?  ": "nb_verres_alcool_jour",
+            "Avec quelle fréquence buvez-vous 6 verres ou davantage lors d'une occasion particulière ?": "freq_binge_drinking",
+            "DATE DE REMPLISSAGE.FOYER": "date_remplissage_foyer",
+            "Combien de personnes vivent avec vous dans votre foyer ?": "nb_personnes_foyer",
+            "Comment vivez-vous ?": "type_logement",
+            "Parmi les tranches suivantes, dans laquelle se situe le revenu mensuel net de vo": "revenu_mensuel_net",
+            "Avez-vous des animaux domestiques ?": "animaux_domestiques",
+            "Quelle est la race de votre(vos) chien(s) ?": "race_chien",
+            "Quel est le code postal de votre commune d'habitation ?": "code_postal",
+            "Sélectionnez votre commune": "commune",
+            "Votre lieu de résidence se trouve en :": "zone_residence",
+            "Quel est le type d'habitat de votre voisinage ?": "type_habitat_voisinage",
+            "Vous habitez dans :": "type_logement_residence",
+            "Vous occupez le logement en tant que :": "statut_occupation_logement",
+            "A quel étage habitez-vous ?": "etage_habitation",
+            "Dans votre logement, combien y a-t-il d'étages  ?": "nb_etages_logement",
+            "Quelle est la surface de votre logement ?": "surface_logement_m2",
+            "Merci de préciser la surface exacte si vous la connaissez": "surface_logement_precise",
+            "Combien avez-vous de pièces dans votre logement ?": "nb_pieces_logement",
+            "Y a-t-il des escaliers à l'intérieur de votre logement ?": "escaliers_interieur",
+            "Y a-t-il des escaliers à l'extérieur de votre logement ?": "escaliers_exterieur",
+            "Votre logement dispose-t-il d'un grenier ?": "grenier",
+            "Votre logement dispose-t-il d'une cave ?": "cave",
+            "Votre logement dispose-t-il d'un ou plusieurs balcons ?": "balcons",
+            "De quel type est le chauffage principal de votre logement ?": "chauffage_principal",
+            "Quelles sont les sources d'énergie du chauffage de votre logement ?": "sources_energie_chauffage",
+            "De quel(s) appareils de chauffage disposez-vous ?": "appareils_chauffage",
+            "Êtes-vous équipés de détecteur de fumée ?": "detecteur_fumee",
+            "Êtes-vous équipés de détecteur de monoxyde de carbone ?": "detecteur_monoxyde",
+            "Êtes-vous équipés d'extincteur dans votre logement ?": "extincteur",
+            "Disposez-vous d'un box ou d'un garage/box ?": "garage_box",
+            "Disposez-vous d’un espace extérieur (jardin, terrain, cour…)  ?": "espace_exterieur",
+            "Quelle est la surface de cet espace extérieur ?": "surface_espace_exterieur",
+            "Merci de préciser la surface exacte si vous la connaissez_1": "surface_espace_precise",
+            "Avez-vous un abri ou une cabane de jardin ?": "abri_jardin",
+            "Y a -t-il un plan d'eau et/ou une piscine dans votre espace extérieur ?": "piscine_plan_eau"
+        }, inplace=True)
+
+        
+    # ------------- Suppresion des colonnes ------------- #
+        
+        df_BD.drop([col for col in df_BD.columns if col.lower().startswith("colonne")], axis=1, inplace=True)
+        # Supprimer les colonnes commençant par "Colonne"
+        df_Acc = df_Acc.drop([col for col in df_Acc.columns if col.startswith("colonne")], axis=1)
+        df_BD = df_BD.drop([col for col in df_BD.columns if col.startswith("colonne")], axis=1)
+
+    # ------------- Modification dans df_BD ------------- #        
+    
+        if 'taille_cm' in df_BD.columns:
+            df_BD['taille_cm'] = df_BD['taille_cm'].apply(convertir_taille)
+        
+        if 'annee_naissance' in df_BD.columns:
+            df_BD['annee_naissance'] = df_BD['annee_naissance'].apply(convertir_annees_naissance)
+            df_BD['annee_naissance'] = pd.to_numeric(df_BD['annee_naissance'], errors='coerce')
+
+            # Calcul de l'âge
+
+            annee_actuelle = date.today().year
+            df_BD["age"] = annee_actuelle - df_BD["annee_naissance"]
+
+            # Tranche d'age
+
+            df_BD["Tranche_Age"] = df_BD["age"].apply(get_tranche_age)
+            
+        # Séparer 'DATE DE REMPLISSAGE' en 'DATE' et 'HEURE' pour df_BD (avec secondes)
+        
+        if 'date_remplissage' in df_BD.columns:
+            df_BD['DATE'] = df_BD['date_remplissage'].apply(convertir_date)
+            df_BD['HEURE'] = df_BD['date_remplissage'].apply(convertir_heure)
+
+            # Supprimer la clonne
+
+            df_BD.drop(columns=['date_remplissage'], inplace=True)
+    
+    
+        # Séparer 'DATE DE REMPLISSAGE.FOYER' en 'DATE.FOYER' et 'HEURE.FOYER'
+
+        if 'date_remplissage_foyer' in df_BD.columns:
+            df_BD['DATE.FOYER'] = df_BD['date_remplissage_foyer'].apply(convertir_date)
+            df_BD['HEURE.FOYER'] = df_BD['date_remplissage_foyer'].apply(convertir_heure)
+
+            # Supprimer la clonne
+
+            df_BD.drop(columns=['date_remplissage_foyer'], inplace=True)
+            
+        # Exemple : traitement de la colonne JSON 'Quelles sont les activités sportives que vous pratiquez ?'
+    
+        if 'Quels sont les accidents que vous avez eu ?' in df_BD.columns:
+            bd_expanded = df_BD['Quelles sont les activités sportives que vous pratiquez ?'].apply(expand_json_list)
+            
+            # Préfixer les nouvelles colonnes si besoin
+
+            bd_expanded_type = bd_expanded.add_prefix("Type d'activité")
+            bd_expanded_activite = bd_expanded.add_prefix("Activité précise")
+            
+            # Ajouter les nouvelles colonnes au DataFrame
+
+            df_BD = pd.concat([df_BD, bd_expanded_type, bd_expanded_activite], axis=1)
+
+            # Supprimer l'ancienne colonne source
+
+            df_BD.drop(columns=['Quelles sont les activités sportives que vous pratiquez ?'], inplace=True)
+
+        
+        # Traitement de la colonne 'FOYER'
+    
+        if 'Qui sont les personnes vivant avec vous dans votre foyer ?' in df_BD.columns:
+            bd_expanded = df_BD['Qui sont les personnes vivant avec vous dans votre foyer ?'].apply(expand_json_list)
+                
+            # Préfixer les nouvelles colonnes si besoin
+
+            bd_expanded_type = bd_expanded.add_prefix("Sexe")
+            bd_expanded_activite = bd_expanded.add_prefix("Type de personne")
+            bd_expanded_type = bd_expanded.add_prefix("Année de naissance")
+            bd_expanded_type = bd_expanded.add_prefix("Occupation du logement")
+            bd_expanded_type = bd_expanded.add_prefix("Inscrite MAVIE")
+                
+            # Ajouter les nouvelles colonnes au DataFrame
+
+            df_BD = pd.concat([df_BD, bd_expanded_type, bd_expanded_activite], axis=1)
+        
+            # Supprimer l'ancienne colonne source
+
+            df_BD.drop(columns=['Qui sont les personnes vivant avec vous dans votre foyer ?'], inplace=True)
+    
+            
+        # Extraction des contenus entre parenthèses des activités dans 'Cochez toutes les activités que vous pratiquez.'
+
+        if 'Cochez toutes les activités que vous pratiquez.' in df_BD.columns:
+            df_BD['Activités avec un écran'] = df_BD['Cochez toutes les activités que vous pratiquez.'].apply(lambda x: extraire_parenthese_theme(x, 'Activités avec un écran'))
+            df_BD['Activités avec un écran'] = df_BD['Cochez toutes les activités que vous pratiquez.'].apply(filtrer_ecran)
+            df_BD['Lecture'] = df_BD['Cochez toutes les activités que vous pratiquez.'].apply(lambda x: extraire_parenthese_theme(x, 'Lecture'))
+            df_BD['Jeu intérieur, Sorties'] = df_BD['Cochez toutes les activités que vous pratiquez.'].apply(extraire_jeu_sorties)
+            df_BD['Activité sportive'] = df_BD['Cochez toutes les activités que vous pratiquez.'].apply(lambda x: extraire_parenthese_theme(x, 'Activité sportive'))
+            df_BD['Activités manuelles'] = df_BD['Cochez toutes les activités que vous pratiquez.'].apply(lambda x: extraire_parenthese_theme(x, 'Activités manuelles'))
+            df_BD['Activités artistiques'] = df_BD['Cochez toutes les activités que vous pratiquez.'].apply(lambda x: extraire_parenthese_theme(x, 'Activités artistiques'))
+            df_BD['Jardinage, bricolage, activités ménagères'] = df_BD['Cochez toutes les activités que vous pratiquez.'].apply(extraire_jardinage_bricolage)
+            
+            # Supprimer l'ancienne colonne source
+
+            df_BD.drop(columns=['Cochez toutes les activités que vous pratiquez.'], inplace=True)
+        
+        # Création de la colonne 'Pays de naissance final'
+
+        if 'lieu_naissance' in df_BD.columns and 'pays_naissance' in df_BD.columns:
+            df_BD['pays de naissance'] = df_BD.apply(lambda row: row['pays_naissance'] if pd.notna(row['lieu_naissance']) and row['lieu_naissance'].strip().lower() != 'en france' else 'France', axis=1)
+           
+            # Supprimer la clonne
+
+            df_BD.drop(columns=['lieu_naissance'], inplace=True)
+            
+            # Supprimer la clonne
+
+            df_BD.drop(columns=['pays_naissance'], inplace=True)
+
+        # Traitement de la colonne 'Quels sont les accidents que vous avez eu ?'   
+
+        if 'Quels sont les accidents que vous avez eu ?' in df_BD.columns:
+            acc_expanded = df_BD['Quels sont les accidents que vous avez eu ?'].apply(expand_json_list)
+            df_BD = pd.concat([df_BD, acc_expanded], axis=1)
+
+            # Supprimer l'ancienne colonne source
+
+            df_BD.drop(columns=['Quels sont les accidents que vous avez eu ?'], inplace=True)
+            
+    
+        # Calcul de l'IMC
+
+        df_BD["IMC"] = ((df_BD["poids_kg"] / (df_BD["taille_cm"] ** 2)*10000)).round(2)
+        df_BD["categorie_imc"] = df_BD["IMC"].apply(categorie_imc)
+        
+        
+        # ------------- Modification dans df_Acc ------------- #   
+
+        # Traitement de la colonne 'naissance' 
+        
+        if 'annee_naissance' in df_Acc.columns:
+            df_Acc['annee_naissance'] = df_Acc['annee_naissance'].apply(convertir_annees_naissance)
+            df_Acc['annee_naissance'] = pd.to_numeric(df_Acc['annee_naissance'], errors='coerce')
+
+            # Calcul de l'âge
+
+            annee_actuelle = date.today().year
+            df_Acc["age"] = annee_actuelle - df_Acc["annee_naissance"]
+
+            # Tranche d'age
+
+            df_Acc["Tranche_Age"] = df_Acc["age"].apply(get_tranche_age)
+
+        # Traitement de la colonne 'date_remplissage'
+
+        if 'date_remplissage' in df_Acc.columns:
+            df_Acc['Date_remplissage'] = df_Acc['date_remplissage'].apply(convertir_date)
+            df_Acc['Heure_remplissage'] = df_Acc['date_remplissage'].apply(extraire_heure)
+            df_Acc.drop(columns=['date_remplissage'], inplace=True)
+        
+        # Traitement de la colonne 'type_blessures'
+
+        if 'type_blessures' in df_Acc.columns:
+            blessure_expanded = df_Acc['type_blessures'].apply(expand_json_list)
+            df_Acc = pd.concat([df_Acc, blessure_expanded], axis=1)
+            df_Acc.drop(columns=['type_blessures'], inplace=True)
+
+        # Traitement de la colonne 'type_accident'
+            
+        if 'type_accident' in df_Acc.columns:
+            accident_expanded = df_Acc['type_accident'].apply(expand_json_list)
+            df_Acc = pd.concat([df_Acc, accident_expanded], axis=1)
+            df_Acc.drop(columns=['type_accident'], inplace=True)
+            
+        if 'heure_accident' in df_Acc.columns:
+            df_Acc["Tranche_heure"] = df_Acc["heure_accident"].apply(get_tranche_heure)
+            
+        # Traitement des colonnes texte pour supprimer les sauts de ligne
+
+        colonnes_texte = ['colonne1', 'colonne2', 'colonne3']  # Remplace par les noms réels des colonnes texte
+        for col in colonnes_texte:
+            if col in df_BD.columns:
+                df_BD[col] = df_BD[col].apply(supprimer_sauts_ligne_texte)
+
+        afficher_text("Traitement terminé.")
+        messagebox.showinfo("Traitement", "Traitement des fichiers terminé avec succès.")
+
+    except Exception as e:
+        messagebox.showerror("Erreur", f"Une erreur est survenue : {e}")
+        afficher_text(str(df_BD.head()))
+
+
+
+
+# ======== Interface utilisateur ========
+
+fenetre = tk.Tk()
+fenetre.title("Traitement des fichiers CSV - Accident et BD")
+fenetre.configure(bg="#0f172a")
+
+# Taille de la fenêtre
+
+largeur, hauteur = 600, 500
+x = (fenetre.winfo_screenwidth() // 2) - (largeur // 2)
+y = (fenetre.winfo_screenheight() // 2) - (hauteur // 2)
+fenetre.geometry(f"{largeur}x{hauteur}+{x}+{y}")
+
+# Style des boutons
+
+style_bouton = {
+    "bg": "#1e293b",
+    "fg": "#f8fafc",
+    "activebackground": "#38bdf8",
+    "activeforeground": "#7dd3fc",
+    "font": ("Arial", 10, "bold"),
+    "relief": tk.FLAT,
+    "width": 40,
+    "padx": 5,
+    "pady": 5
+}
+
+# Boutons
+
+btn_charger_excel = tk.Button(fenetre, text="Charger fichier Excel MAVIE", command=charger_fichier_excel, **style_bouton)
+btn_charger_excel.pack(pady=5)
+
+btn_traiter = tk.Button(fenetre, text="Lancer le traitement", command=lancer_traitement, **style_bouton)
+btn_traiter.pack(pady=5)
+
+btn_exporter = tk.Button(fenetre, text="Exporter vers Excel", command=exporter_vers_excel, **style_bouton)
+btn_exporter.pack(pady=5)
+
+btn_importer = tk.Button(fenetre, text="Importer et envoyer fichiers Excel", command=importer_plusieurs_fichiers_excel, **style_bouton)
+btn_importer.pack(pady=5)
+
+btn_ouvrir_powerbi = tk.Button(fenetre, text="Ouvrir Power BI", command=ouvrir_power_bi, **style_bouton)
+btn_ouvrir_powerbi.pack(pady=5)
+
+btn_quitter = tk.Button(fenetre, text="Quitter l'application", command=fenetre.destroy, **style_bouton)
+btn_quitter.pack(pady=5)
+
+# Zone de texte
+
+zone_texte = scrolledtext.ScrolledText(fenetre, width=65, height=10, font=("Arial", 10))
+zone_texte.configure(bg="#334155", fg="#f8fafc", insertbackground="#7dd3fc")
+zone_texte.pack(pady=10)
+
+fenetre.mainloop()

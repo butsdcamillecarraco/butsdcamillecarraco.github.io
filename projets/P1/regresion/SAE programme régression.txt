@@ -1,0 +1,128 @@
+# Ce fichier est encodé en UTF-8.
+
+# Sélection du répertoire de travail et importation des données
+setwd("C:/Users/camil/OneDrive/Devoir/Semestre 2/Stat des/SAE")
+setwd("C:/Users/camil/OneDrive/Devoir/Semestre 2/Stat des/SAE")
+
+# Import des fichiers à notre disposition
+test <- read.csv2("test.csv")
+train <- read.csv2("train.csv")
+
+###################################
+
+# Sélection des maisons
+maison <- train[train$Type.local == "Maison", c("id", "Commune", "Surface.reelle.bati", "Nombre.pieces.principales", "Surface.terrain", "Valeur.fonciere")]
+
+# Calcul du prix moyen au m²
+maison$PrixMoyenM2 <- maison$Valeur.fonciere / maison$Surface.reelle.bati
+
+# Calcul du prix moyen au m² par commune
+PrixMoyenM2C <- aggregate(PrixMoyenM2 ~ Commune, data = maison, FUN = mean)
+colnames(PrixMoyenM2C)[2] <- "PrixMoyenM2C"
+
+# Ajout des prix moyens au data frame principal
+maison <- merge(maison, PrixMoyenM2C, by = "Commune")
+
+# Variances et covariance
+varxM <- var(maison$PrixMoyenM2C)
+varyM <- var(maison$Surface.reelle.bati)
+covxyM <- cov(maison$PrixMoyenM2C, maison$Surface.reelle.bati)
+
+# Coefficient de corrélation
+rM <- cor(maison$Surface.reelle.bati, maison$PrixMoyenM2C)
+
+# Régression linéaire
+modeleM <- lm(Valeur.fonciere ~ Surface.reelle.bati * PrixMoyenM2C, data = maison)
+
+# Prédictions
+maison$VFPredites <- predict(modeleM, newdata = maison)
+
+# Calcul de la moyenne de PrixMoyenM2C
+prix_moyen <- mean(maison$PrixMoyenM2C, na.rm = TRUE)
+
+# Créer un vecteur de valeurs x (surface)
+x_vals <- seq(min(maison$Surface.reelle.bati), max(maison$Surface.reelle.bati), length.out = 100)
+
+# Créer une table pour les prédictions, en fixant PrixMoyenM2C à sa moyenne
+newdata <- data.frame(Surface.reelle.bati = x_vals,PrixMoyenM2C = prix_moyen)
+
+# Prédictions du modèle
+y_pred <- predict(modeleM, newdata = newdata)
+
+# Tracer les points originaux
+grapM <- plot(maison$Surface.reelle.bati, maison$Valeur.fonciere, main = "Modèle", xlab = "Surface réelle bâtie", ylab = "Valeur foncière", pch = 19, col = "darkgray")
+
+# Tracer la droite "croissante" en fixant PrixMoyenM2C
+lines(x_vals, y_pred, col = "red", lwd = 2)
+
+# Résidus et SCR
+maison$Residus <- maison$Valeur.fonciere - maison$VFPredites
+SCRM <- sum(maison$Residus^2)
+
+###################################
+
+# Sélection des appartements
+appart <- train[train$Type.local == "Appartement", c("id", "Commune", "Surface.reelle.bati", "Nombre.pieces.principales", "Surface.terrain", "Valeur.fonciere")]
+
+# Calcul du prix moyen au m²
+appart$PrixMoyenM2 <- appart$Valeur.fonciere / appart$Surface.reelle.bati
+
+# Calcul du prix moyen au m² par commune
+PrixMoyenM2C <- aggregate(PrixMoyenM2 ~ Commune, data = appart, FUN = mean)
+colnames(PrixMoyenM2C)[2] <- "PrixMoyenM2C"
+
+# Ajout des prix moyens au data frame principal
+appart <- merge(appart, PrixMoyenM2C, by = "Commune")
+
+# Variances et covariance
+varxA <- var(appart$PrixMoyenM2C)
+varyA <- var(appart$Surface.reelle.bati)
+covxyA <- cov(appart$PrixMoyenM2C, appart$Surface.reelle.bati)
+
+# Coefficient de corrélation
+rA <- cor(appart$Surface.reelle.bati, appart$PrixMoyenM2C)
+
+# Régression linéaire
+modeleA <- lm(Valeur.fonciere ~ Surface.reelle.bati * PrixMoyenM2C, data = appart)
+
+# Prédictions
+appart$VFPredites <- predict(modeleA, data = appart)
+
+# Calcul de la moyenne de PrixMoyenM2C
+prix_moyen <- mean(appart$PrixMoyenM2C, na.rm = TRUE)
+
+# Créer un vecteur de valeurs x (surface)
+x_vals <- seq(min(appart$Surface.reelle.bati), max(appart$Surface.reelle.bati), length.out = 100)
+
+# Créer une table pour les prédictions, en fixant PrixMoyenM2C à sa moyenne
+newdata <- data.frame(Surface.reelle.bati = x_vals,PrixMoyenM2C = prix_moyen)
+
+# Prédictions du modèle
+y_pred <- predict(modeleA, newdata = newdata)
+
+# Tracer les points originaux
+grapA <- plot(appart$Surface.reelle.bati, appart$Valeur.fonciere, main = "Modèle", xlab = "Surface réelle bâtie", ylab = "Valeur foncière", pch = 19, col = "darkgray")
+
+# Tracer la droite "croissante" en fixant PrixMoyenM2C
+lines(x_vals, y_pred, col = "red", lwd = 2)
+
+# Résidus et SCR
+appart$Residus <- appart$Valeur.fonciere - appart$VFPredites
+SCRA <- sum(appart$Residus^2)
+
+prediction_maison <- data.frame(
+  id = maison$id,
+  ValeurFonciere = maison$VFPredites
+)
+
+prediction_appart <- data.frame(
+  id = appart$id,
+  ValeurFonciere = appart$VFPredites
+)
+
+# Combiner les deux
+prediction <- rbind(prediction_maison, prediction_appart)
+
+# Sauvegarde
+write.csv2(prediction, file = "prediction.csv", row.names = FALSE)
+
