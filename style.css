@@ -1,0 +1,603 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--muted);
+}
+
+header {
+    background: linear-gradient(135deg, var(--surface) 0%, var(--accent-deep) 100%);
+    position: relative;
+    overflow: visible; /* changer de hidden à visible pour laisser le dropdown visible */
+    padding: 0;
+    z-index: 5; /* z-index inférieur au dropdown */
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 60%;
+    height: 150%;
+    background: linear-gradient(135deg, transparent 40%, var(--accent) 100%);
+    transform: skewX(-20deg);
+    z-index: 1;
+}
+
+nav a:hover {
+    color: var(--accent);
+}
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20%;
+  height: 12.1%;
+  object-fit: cover;
+  z-index: 0;
+}
+
+nav ul {
+    list-style: none;
+    padding: 10px;
+    display: flex;
+    justify-content: right;  /* centre les éléments horizontalement */
+    gap: 10px;                /* espace contrôlé entre les éléments */
+    margin: 0;
+
+}
+
+nav ul li {
+    display: inline-block;
+    margin: 0 18px;
+}
+nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: color 0.2s;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+section {
+    padding: 20px;
+    background: linear-gradient(180deg, rgba(26,61,46,0.5), rgba(255,255,255,0.01));
+    border-left: 4px solid var(--accent);
+    box-shadow: 0 8px 24px var(--soft-shadow);
+}
+
+/* Footer aligné sur le thème et non absolu */
+div#pied{
+    background: var(--surface-2);
+    color: var(--muted);
+    padding: 12px 16px;
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 24px auto 0;
+    text-align: center;
+    position: static;
+    border-top: 3px solid var(--accent);
+    border-radius: 8px;
+}
+
+ul {
+list-style : none;
+}
+ 
+
+
+.propo{
+    background-color: #155a6e; /* anciennement #1b6198 */
+}
+.propo a{
+    color: var(--muted);
+}
+
+h2 {
+    color: var(--muted);
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 0.5em;
+    font-style: normal;
+    text-decoration: none;
+}
+
+input, textarea, button {
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+}
+
+button {
+    background-color: #165a72; /* anciennement #1873b2 */
+    color: #d8eef4;            /* anciennement #e6e8ea */
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #2ed0b1; /* anciennement #39e6c6 */
+    color: #e6e8ea;
+}
+
+/* Palette inspirée du template : vert foncé, orange, blanc */
+:root{
+    --bg: #0f2818; /* vert très foncé (fond principal) */
+    --surface: #1a3d2e; /* vert moyen (cartes) */
+    --surface-2: #0a1410; /* presque noir (footer) */
+    --card-light: #ffffff; /* blanc pur (cartes claires) */
+    --muted: #ffffff; /* texte blanc */
+    --accent: #ff6b35; /* orange vif (accent) */
+    --accent-deep: #1a5f4a; /* vert profond (boutons/titres) */
+    --text-dark: #0f2818; /* texte sombre sur fonds clairs */
+    --orange-light: #ffb380; /* orange clair pour variantes */
+    --green-light: #2d7a5e; /* vert clair pour variantes */
+    --glass: rgba(255,255,255,0.02);
+    --soft-shadow: rgba(15,40,24,0.20);
+    --card-tint-1: rgba(255,107,53,0.08);
+    --card-tint-2: rgba(255,255,255,0.015);
+    --max-width: 1100px; /* nouvelle variable pour centrage du contenu */
+}
+
+/* Harmonisation des éléments principaux */
+body{
+    background: var(--bg);
+    color: var(--muted); /* texte global blanc */
+}
+
+header{
+    background: transparent;
+}
+
+/* Intro / présentation */
+.propo, .intro-card {
+    background: linear-gradient(135deg, var(--accent-deep) 0%, var(--surface) 100%);
+    color: var(--muted);
+    border: none;
+    border-top: 4px solid var(--accent);
+    box-shadow: 0 12px 32px rgba(15,40,24,0.25);
+}
+.intro-card .portrait {
+    width: 180px;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 8px 28px rgba(255,107,53,0.20);
+    border: 4px solid var(--accent);
+}
+.intro-card h1 {
+    font-size: 1.6rem;
+    margin-bottom: 0.2em;
+    color: var(--muted);
+}
+.intro-card h2 {
+    color: var(--accent);
+    margin-bottom: 0.7em;
+    font-size: 1.15rem;
+}
+.intro-card p {
+    color: var(--muted);
+}
+
+/* Cartes de passions : fond cohérent et blocs lisibles */
+.cartes-passions {
+    display: flex;
+    gap: 1.2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.carte-passion {
+    width: 300px;
+    padding: 1.25rem;
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba(26,61,46,0.65), rgba(10,20,16,0.7));
+    border: 1px solid rgba(255,107,53,0.15);
+    border-top: 3px solid var(--accent);
+    box-shadow: 0 10px 26px rgba(15,40,24,0.30);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: all .24s ease;
+}
+.carte-passion:hover {
+    border-color: var(--accent);
+    background: linear-gradient(180deg, rgba(26,61,46,0.85), rgba(10,20,16,0.8));
+}
+.carte-passion h3 { color: var(--accent); }
+
+/* Cartes de passions : images harmonisées */
+.cartes-passions .projet-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 6px 14px rgba(15,40,24,0.25);
+    margin-bottom: .8rem;
+}
+
+/* Bloc de description dans chaque carte */
+.cartes-passions .projet-details {
+    display: block;
+    width: 100%;
+    margin-top: 0.6rem;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,107,53,0.18);
+    border-radius: 10px;
+    padding: 12px 14px;
+    box-shadow: 0 6px 18px rgba(15,40,24,0.18);
+    color: var(--text-dark);
+}
+.cartes-passions .detail-text {
+    color: var(--muted);
+    text-align: justify;
+}
+
+.projet-details {
+    display: none;
+    margin-top: 10px;
+    color: var(--text-dark);
+    background: var(--card-light);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(2,6,23,0.06);
+}
+
+.projet-details p,
+.projet-details li,
+.projet-details h3 {
+    color: var(--text-dark);
+    margin: 0 0 0.6rem 0;
+}
+
+/* Ajustements divers pour harmonisation */
+.propo a { color: var(--text-dark); }
+button, .en-savoir-plus {
+    border-radius: 8px;
+    transition: background .18s ease, color .18s ease, transform .12s ease;
+}
+button { background-color: var(--accent-deep); color: var(--muted); }
+button:hover, .en-savoir-plus:hover {
+    background-color: transparent;
+    color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(255,107,53,0.25);
+}
+
+/* Style pour la section Projets */
+.projets-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px; /* réduit légèrement pour cohérence avec les fonds */
+    margin: 40px 0;
+    width: 100%;
+}
+.projet-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 40px;
+    width: 100%;
+    padding: 18px;
+    border-radius: 12px;
+    background: transparent; /* base transparente pour superposition des alternances */
+    transition: transform 220ms ease, box-shadow 220ms ease, background 220ms ease;
+    border: 1px solid transparent; /* pour éviter saut de layout au hover */
+}
+.projet-image {
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(2,6,23,0.20); /* remplace le #ccc par une ombre sombre subtile */
+    width: 45%;
+    height: 400px;          /* fixe une hauteur identique */   
+}
+.projet-content {
+    width: 45%;
+}
+.projet-details {
+    display: none;
+    margin-top: 10px;
+    color: var(--text-dark);
+    background: var(--card-light);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(2,6,23,0.06);
+}
+.projet-row.even .projet-image { order: 2; }
+.projet-row.even .projet-content { order: 1; }
+.projet-row.odd .projet-image { order: 1; }
+.projet-row.odd .projet-content { order: 2; }
+
+.en-savoir-plus {
+    margin-top: 10px;
+    padding: 6px 16px;
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid rgba(255,107,53,0.18);
+    border-radius: 8px;
+    cursor: pointer;
+}
+.en-savoir-plus:hover {
+    background-color: transparent;
+    color: var(--accent);
+    box-shadow: 0 6px 16px rgba(255,107,53,0.25);
+    transform: translateY(-2px);
+}
+
+/* Contact Section */
+.contact-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.contact-item {
+    background: linear-gradient(135deg, var(--surface) 0%, var(--accent-deep) 100%); /* moins saturé que le bleu vif */
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    color: #eaf6f4;
+    transition: transform 0.3s ease;
+    box-shadow: 0 10px 28px rgba(15,40,24,0.20);
+}
+
+.contact-item:nth-child(1) {
+    background: linear-gradient(135deg, #1f6c7a 0%, #114b57 100%);
+}
+
+.contact-item:nth-child(2) {
+    background: linear-gradient(135deg, #165a72 0%, #0f3b4b 100%); /* variante harmonisée */
+}
+
+.contact-item:nth-child(3) {
+    background: linear-gradient(135deg, #1f6c7a 0%, #114b57 100%);
+}
+
+.contact-item:hover {
+    transform: scale(1.05);
+}
+
+.contact-item h3 {
+    margin-bottom: 1rem;
+    color: var(--accent);
+}
+
+.contact-item a {
+    color: var(--muted);
+    text-decoration: none;
+}
+
+/* Style pour les tableaux synthétiques */
+table {
+    border-collapse: collapse;
+    width: 97%;
+    margin: 20px 0;
+    background: rgba(255,255,255,0.02); /* moins dur que blanc */
+    color: var(--muted);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(2,6,23,0.25);
+    font-size: 1rem;
+}
+
+thead {
+    background: linear-gradient(90deg, var(--accent-deep), var(--surface));
+    color: var(--muted);
+}
+
+th, td {
+    padding: 14px 18px;
+    text-align: left;
+}
+
+tbody tr:nth-child(even) {
+    background: rgba(255,255,255,0.01); /* subtile */
+}
+
+tbody tr:hover {
+    background: rgba(255,255,255,0.03);
+}
+
+th {
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.bilan-card {
+    background: linear-gradient(135deg, var(--surface) 0%, var(--accent-deep) 100%);
+    color: var(--muted);
+    border-left: 4px solid var(--accent);
+    border-radius: 14px;
+    box-shadow: 0 12px 28px rgba(15,40,24,0.25);
+    padding: 28px 24px;
+    margin: 26px 0;
+}
+.bilan-card h3 {
+    color: var(--accent);
+    margin-top: 0;
+}
+
+footer, #pied, footer #pied {
+    background: var(--surface-2);
+    color: var(--muted);
+    border-top: 3px solid var(--accent);
+}
+
+/* Responsive pour les tableaux */
+@media (max-width: 700px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+        width: 97%;
+    }
+    thead tr {
+        display: none;
+    }
+    td {
+        position: relative;
+        padding-left: 50%;
+        min-height: 40px;
+    }
+    td:before {
+        position: absolute;
+        left: 12px;
+        top: 12px;
+        white-space: nowrap;
+        font-weight: bold;
+        color: #25608b;
+        content: attr(data-label);
+    }
+}
+
+/* Menu projets harmonisé et barre de navigation modernisée */
+.navbar {
+    position: relative;
+    z-index: 10;
+    background: transparent;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 12px 24px;
+    gap: 8px;
+    min-height: 60px;
+    box-shadow: none;
+}
+
+.navbar a, .navbar .dropbtn {
+    color: var(--muted);
+    text-align: center;
+    padding: 10px 16px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    border-bottom: 2px solid transparent;
+    transition: border-color 220ms ease, color 220ms ease, background 220ms ease;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.navbar a:hover, .navbar .dropbtn:hover, .dropdown:hover .dropbtn, .dropbtn:focus {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    background: rgba(255,107,53,0.08);
+}
+
+.dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    background-color: var(--card-light);
+    color: var(--text-dark);
+    min-width: 200px;
+    box-shadow: 0 10px 30px rgba(15,40,24,0.25);
+    z-index: 1001; /* augmenter encore plus haut */
+    border-radius: 8px;
+    border-top: 3px solid var(--accent);
+    padding: 8px 0;
+    animation: fadeIn 220ms ease;
+    pointer-events: auto; /* s'assurer que les clics sont activés */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-content a {
+    color: var(--text-dark);
+    padding: 12px 18px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+    border-radius: 6px;
+    transition: background 220ms ease, color 220ms ease;
+    font-size: 0.95rem;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    font-weight: 500;
+    margin: 2px 6px;
+    cursor: pointer; /* ajouter le curseur pointeur */
+}
+
+.dropdown-content a:hover, .dropdown-content a:focus {
+    background-color: var(--accent);
+    color: var(--muted);
+}
+
+.dropdown:hover .dropdown-content,
+.dropdown:focus-within .dropdown-content {
+    display: block;
+}
+
+/* Responsive navbar */
+@media (max-width: 700px) {
+    .navbar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 8px;
+        min-height: unset;
+    }
+    .navbar a, .navbar .dropbtn {
+        width: 100%;
+        justify-content: flex-start;
+        padding: 12px 12px;
+        font-size: 0.95rem;
+        border-bottom: none;
+        border-left: 3px solid transparent;
+    }
+    .navbar a:hover, .navbar .dropbtn:hover {
+        border-left-color: var(--accent);
+        border-bottom-color: transparent;
+    }
+    .dropdown-content {
+        position: static; /* sur mobile, placer en flux normal */
+        display: none;
+        box-shadow: none;
+        border-radius: 0 0 8px 8px;
+        border-top: 3px solid var(--accent);
+        width: 100%;
+        min-width: unset;
+    }
+    .dropdown:hover .dropdown-content,
+    .dropdown:focus-within .dropdown-content {
+        display: block;
+    }
+}
+
+/* règle globale de secours pour les <p> */
+p {
+    color: var(--muted); /* texte blanc par défaut */
+    margin: 0 0 1rem 0;
+}
+
+/* texte de l'intro (fond clair) reste sombre */
+.intro-text {
+    color: var(--text-dark);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+/* descriptions dans les cartes de passion (fond discret clair) restent sombres */
+.detail-text {
+    color: var(--text-dark);
+    text-align: justify;
+    font-size: 0.95rem;
+}

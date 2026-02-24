@@ -1,0 +1,120 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Dec  9 21:26:47 2024
+
+@author: camil
+"""
+
+import json
+import csv
+from datetime import datetime
+from bs4 import BeautifulSoup
+
+
+# Fonction pour convertir une date ISO en format français
+
+def convertir_date(date_iso):
+    if date_iso:
+        try:
+            date_obj = datetime.fromisoformat(date_iso)
+            return date_obj.strftime('%d/%m/%Y')
+        except ValueError:
+            return ""
+    return ""
+
+# Fonction pour extraire l'heure d'une date ISO
+
+def extraire_heure(date_iso):
+    if date_iso:
+        try:
+            date_obj = datetime.fromisoformat(date_iso)
+            return date_obj.strftime('%H:%M')
+        except ValueError:
+            return ""
+    return ""
+
+# Accesibilité du lieu pour les personnes handicapés 
+
+def acces_pmr(pmr):
+    if pmr == 0 :
+        return "Non"
+    elif pmr == 1:
+        return "Oui"
+    else :
+        return "Entrée invalide" # Au cas où il y est une case blanche 
+    
+# Suppression du <p> du format HTML
+
+def nettoyer_html(texte):
+    if not isinstance(texte, str):
+        return texte
+    
+    try :
+        cleaned_text = BeautifulSoup(texte, "html.parser").get_text()
+        return cleaned_text.strip()
+    except Exception as e :
+        return texte
+
+# Ouverture d'un fichier json
+
+try:
+    f = open("que-faire-a-paris.json", 'rt', encoding='utf-8')
+    contenu = json.load(f)
+    print(contenu)
+    
+    
+# Si fichier non trouvé renvoit l'erreur
+
+except: 
+    print("Fichier introuvable !")
+finally:
+    f.close()
+
+# Ecriture des noms des colonnes de l'en-tête 
+
+with open('Sortie.csv', 'w', encoding='utf-8-sig', newline='') as f:
+
+    fieldnames = [
+        'ID', 'URL', 'Titre', 'Chapeau', 'Description', 
+        'Date de début', 'Heure de début', 'Date de fin', 'Heure de fin', 
+        'Nom du lieu', 'Adresse du lieu', 'Code Postal', 'Ville', 
+        'Coordonnées géographiques', 'Accès PMR', 
+        'Transport', 
+        'Téléphone de contact', 'Email de contact', 'Url de contact', 
+        'Type d’accès', 'Détail du prix', 'URL de l’image de couverture']
+    
+    # Création pour délimiter les colonne dans excel
+    
+    writer = csv.DictWriter(f, fieldnames=fieldnames, delimiter=';')
+    
+    # Ecrire le contenu des colonnes
+     
+    writer.writeheader()
+
+    # Remplissage des colonnes
+      
+    for record in contenu:
+        writer.writerow({
+            'ID': record.get('id'),
+            'URL': record.get('url'),
+            'Titre': record.get('title'),
+            'Chapeau': record.get('lead_text'),
+            'Description':nettoyer_html(record.get('description')),
+            'Date de début': convertir_date(record.get('date_start')),
+            'Heure de début': extraire_heure(record.get('date_start')),
+            'Date de fin': convertir_date(record.get('date_end')),
+            'Heure de fin': extraire_heure(record.get('date_end')),
+            'Nom du lieu': record.get('address_name'),
+            'Adresse du lieu': record.get('address_street'),
+            'Code Postal': record.get('address_zipcode'),
+            'Ville': record.get('address_city'),
+            'Coordonnées géographiques': record.get('lat_lon'),
+            'Accès PMR': acces_pmr(record.get('pmr')),
+            'Transport': record.get('transport'),
+            'Téléphone de contact': record.get('contact_phone'),
+            'Email de contact': record.get('contact_mail'),
+            'Url de contact': record.get('contact_url'),
+            'Type d’accès': record.get('access_type'),
+            'Détail du prix': record.get('price_type'),
+            'URL de l’image de couverture': record.get('cover_url'),
+        })
