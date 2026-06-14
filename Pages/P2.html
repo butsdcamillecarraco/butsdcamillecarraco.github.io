@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Mon Portfolio - Camille Carraco</title>
-    <link rel="stylesheet" href="../style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" >
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css"></head>
 </head>
 
 <body>
@@ -35,7 +38,6 @@
 
     <section>
         <h2>Projets de ma deuxième année</h2>
-        <h2>Cette page est en cours de construction</h2>
 
     <div class="projets-container">
         <div class="projet-row odd">
@@ -54,30 +56,32 @@
                     <p>Explication : Ce projet consistait à analyser des séries temporelles liées à l'uranium et à en tirer des conclusions statistiques pertinentes.</p>
                     <embed src="../projets/P2/Uranium/couverture.png" width="100%" height="240px" />
                     <p><strong>Livrables :</strong></p>
-                    <a href="../projets/P2/Uranium/Flaxh Info Nathël Benoit et Camille Carraco.pdf" target="_blank">Télécharger le contre-rendu</a> <br>
+                    <a href="../projets/P2/Uranium/Flaxh Info Nathël Benoit et Camille Carraco.pdf" target="_blank">Télécharger le compte rendu</a> <br>
                     <a href="../projets/P2/Uranium/Excel-Uranium-SAE.xlsx" target="_blank">Télécharger l'excel</a> <br>
 
                 </div>
             </div>
         </div>
 
+    <div class="projets-container">
         <div class="projet-row even">
-            <img src="../projets/P2" alt="Projet 2" class="projet-image" />
+            <img src="../projets/P2/Talend/talend.png" alt="Projet 2" class="projet-image" />
             <div class="projet-content">
-                <h3>Talend - Alimentation d’une étoile de gestion des ventes !! EN COUR </h3>
+                <h3>Talend - Alimentation d'une étoile de gestion des ventes</h3>
                 <button class="en-savoir-plus" onclick="toggleDetails(2)">En savoir plus</button>
                 <div class="projet-details" id="details-2" style="display:none;">
                     <p>Missions principales :</p>
                     <ul>
-                        <li>!!!!</li>
-                        <li>!!!!</li>
-                        <li>!!</li>
+                        <li>Conception de jobs ETL sous Talend pour alimenter les dimensions Temps, Client, Fournisseur et Produit</li>
+                        <li>Développement du job d'alimentation de la table de faits des ventes avec jointures et gestion des rejets</li>
+                        <li>Mise en place de logs et orchestration des traitements via des jobs lanceurs</li>
                     </ul>
-                    <p>Acquis professionnels : !!</p>
-                    <p>Explication : !!!</p>
-                    <embed src="../projets/P2" type="application/pdf" width="100%" height="240px" />
+                    <p>Acquis professionnels : Maîtrise de Talend Studio, gestion de variables de contexte, contrôle qualité de données, orchestration et traçabilité de traitements ETL</p>
+                    <p>Explication : Ce projet consistait à développer une chaîne de traitement ETL sous Talend permettant d'alimenter un modèle en étoile de gestion des ventes, à partir de fichiers sources CSV, en intégrant des contrôles de qualité et un système de journalisation.</p>
+                    <embed src="../projets/P2/Talend/couverture.png" width="100%" height="240px" />
                     <p><strong>Livrables :</strong></p>
-                    <a href="../projets/P2" target="_blank">Télécharger le projet</a>
+                    <a href="../projets/P2/Talend/Cas étude Talend.docx" target="_blank">Télécharger le cas d'étude</a> <br>
+                    <a href="../projets/P2/Talend/PROJETS_CARRACOzip.zip" target="_blank">Télécharger le projet</a> <br>
                 </div>
             </div>
         </div>
@@ -130,17 +134,17 @@
         <div class="projet-row odd">
             <img src="../projets/P2/VBA/jpo.png" alt="Projet 5" class="projet-image">
             <div class="projet-content">
-                <h3>Automatisation dans tableur - VBA</h3>
+                <h3>Automatisation du traitement des données dans un tableur - VBA & Google Apps Script</h3>
                 <button class="en-savoir-plus" onclick="toggleDetails(5)">En savoir plus</button>
                 <div class="projet-details" id="details-5" style="display:none;">
                     <p>Missions principales :</p>
                     <ul>
-                        <li>Maîtrise de Excel et de ses fonctionnalités avancées</li>
-                        <li>Automatisation de rapports</li>
-                        <li>Compréhension du VBA</li>
+                        <li>Création de formulaires HTML et VBA pour la collecte des données de satisfaction des étudiants</li>
+                        <li>Automatisation de la collecte des données via Google Apps Script vers Google Sheets et Excel</li>
+                        <li>Analyse des données avec VBA et création d'un tableau de bord de visualisation des résultats</li>
                     </ul>
-                    <p>Acquis professionnels : Aisance oratoire explicative, Automatisation Excel</p>
-                    <p>Explication : Création de tableaux de bord automatisés avec Excel et VBA Projet permettant le suivi des notes.</p>
+                    <p>Acquis professionnels : Programmation VBA et Google Apps Script, travail en équipe, automatisation de rapports et tableaux de bord</p>
+                    <p>Explication : Ce projet consistait à développer une application automatisant la collecte et l'analyse de données de satisfaction sur la formation, à l'aide de Google Sheets et Excel. Un tableau de bord a été créé pour visualiser les résultats et permettre aux formateurs de prendre des décisions éclairées pour améliorer la qualité de la formation.</p>
                     <embed src="../projets/P2/VBA/sommaire.png" width="100%" height="240px"/>
                     <p><strong>Livrables :</strong></p>
                     <a href="../projets/P2/VBA/Porjet VBA Eliott Guénard Camille Carraco.xlsm" target="_blank">Télécharger le projet</a> <br>
@@ -151,21 +155,23 @@
 
 
         <div class="projet-row even">
-            <img src="../projets/P2!!!!!" alt="Projet 6" class="projet-image">
+            <img src="../projets/P2/datawarehouse/data.png" alt="Projet 6" class="projet-image">
             <div class="projet-content">
-                <h3>Intégration de données dans un datawarehouse !! EN COUR</h3>
+                <h3>Intégration de données dans un datawarehouse</h3>
                 <button class="en-savoir-plus" onclick="toggleDetails(6)">En savoir plus</button>
                 <div class="projet-details" id="details-6" style="display:none;">
                     <p>Missions principales :</p>
                     <ul>
-                        <li>!!</li>
-                        <li>!!</li>
-                        <li>!!</li>
+                        <li>Intégration de données dans un datawarehouse</li>
+                        <li>Conception et mise en œuvre d'algorithmes de traitement des données</li>
+                        <li>Optimisation des performances des requêtes SQL</li>
                     </ul>
-                    <p>Acquis professionnels : !!</p>
-                    <p>Explication : !! </p>
-                    <embed src="../projets/!!" width="100%" height="240px"/>
-                    <embed src="../projets/!!" width="100%" height="240px"/>
+                    <p>Acquis professionnels : Intégration de données, SQL, Datawarehouse</p>
+                    <p>Explication : Mise en place d’un processus décisionnel basé sur un entrepôt de données. Concevoir et alimenter un entrepôt de données en étoile, puis commencer à exploiter ces données à l’aide d’outils de visualisation. </p>
+                    <embed src="../projets/P2/datawarehouse/couverture.png" width="100%" height="240px"/>
+                    <p><strong>Livrables :</strong></p>
+                    <a href="../projets/P2/datawarehouse/Sport_One.pdf" target="_blank">Télécharger le rapport</a> <br>
+                    <a href="../projets/P2/datawarehouse/sport_one.zip" target="_blank">Télécharger le projet</a>
                 </div>
             </div>
         </div>
@@ -175,20 +181,23 @@
             <img src="../projets/P2/territoire/territoire.jpg" alt="Projet 6" class="projet-image">
 
             <div class="projet-content">
-                <h3>Répondre aux besoins du territoire !! EN COUR</h3>
+                <h3>Répondre aux besoins du territoire</h3>
                 <button class="en-savoir-plus" onclick="toggleDetails(7)">En savoir plus</button>
 
                 <div class="projet-details" id="details-7" style="display:none;">
                     <p>Missions principales :</p>
                     <ul>
-                        <li>!!</li>
-                        <li>!!</li>
-                        <li>!!</li>
+                        <li>Présentation des enjeux de la data science</li>
+                        <li>Animation d'ateliers pratiques</li>
+                        <li>Accompagnement des élèves de lycée</li>
                     </ul>
                     <p>Acquis professionnels : Aisance rédactionnelle, Aisance orale</p>
-                    <p>Explication : !! </p>
-                    <embed src="../projets/P1!!" width="100%" height="240px"/>
-                    <embed src="../projets/P1!!" type="application/pdf" width="100%" height="240px"/>
+                    <p>Explication : Nous avons données des interventions à des lycéens, pour leur permettre de mieux comprendre les enjeux liés à la data science et aux nouvelles technologies. </p>
+                    <embed src="../projets/P2/territoire/couverture.jpeg" width="100%" height="240px"/>
+                    <p><strong>Livrables :</strong></p>
+                    <a href="../projets/P2/territoire/Rapport Future of IA Rose Chauvin et Camille Carraco.pdf" target="_blank">Télécharger le compte rendu</a><br>
+                    <a href="../projets/P2/territoire/BUT Science des Données.pdf" target="_blank">Télécharger la présentation</a><br>
+                    <a href="../projets/P2/territoire/Rapport.zip" target="_blank">Télécharger les rapports</a>
                 </div>
             </div>
         </div>
@@ -217,43 +226,45 @@
 
 
         <div class="projet-row odd">
-            <img src="../projets/P2/!!!!!!" alt="Projet 8" class="projet-image">
-
+            <img src="../projets/P2/Scraping/web.jpg" alt="Projet 9" class="projet-image">
             <div class="projet-content">
-                <h3>Api - web scraping !! EN COUR</h3>
+                <h3>API & Web Scraping - Collecte automatisée de données</h3>
                 <button class="en-savoir-plus" onclick="toggleDetails(9)">En savoir plus</button>
-
                 <div class="projet-details" id="details-9" style="display:none;">
                     <p>Missions principales :</p>
                     <ul>
-                        <li>Création d'une infographie</li>
-                        <li>Travail en équipe et gestion de projet</li>
-                        <li>Réalisation d'une problématique pertinente</li>
+                        <li>Développement d'un site web (PHP, Python, HTML/CSS/JavaScript) pour exploiter l'API SYNOP de Météo-France</li>
+                        <li>Implémentation de fonctionnalités de visualisation, filtrage et export des données collectées</li>
+                        <li>Web scraping avec Python (BeautifulSoup) pour récupérer les données de formations informatiques sur l'Onisep</li>
                     </ul>
-                    <p>Acquis professionnels : Travail d'équipe, Utilisation du logiciel Power BI</p>
-                    <p>Explication : Participation en équipe à un concours de datavisualisation. Création de graphiques interactifs innovants.</p>
-                    <embed src="../projets/P1/dataviz/Trame dataviz 2025-2.pdf" type="application/pdf" width="100%" height="240px"/>
-                    <embed src="../projets/P1/dataviz/Infographie.pdf" type="application/pdf" width="100%" height="240px"/>
+                    <p>Acquis professionnels : Programmation web (PHP, Python, HTML/CSS/JavaScript), collecte de données via API, web scraping, automatisation des processus</p>
+                    <p>Explication : Ce projet universitaire, réalisé en deux parties, consistait d'abord à créer un site permettant de gérer les données collectées via l'API Observation météorologique historique France (SYNOP), puis à réaliser du web scraping sur le site de l'Onisep afin de récupérer des données de formations liées à l'informatique.</p>
+                    <embed src="../projets/P2/Scraping/couverture.png" type="image/png" width="100%" height="240px"/>
+                    <p><strong>Livrables :</strong></p>
+                    <a href="../projets/P2/scraping/meteo.zip" target="_blank">Télécharger le projet</a><br>
+                    <a href="../projets/P2/scraping/Etablissements_Onisep.html" target="_blank">Télécharger le fichier HTML (web scraping)</a>
                 </div>
             </div>
         </div>
 
 
         <div class="projet-row even">
-            <img src="../projets/P1/perf!!!" alt="Projet 10" class="projet-image">
+            <img src="../projets/P2/Dentaire/dent.webp" alt="Projet 10" class="projet-image">
             <div class="projet-content">
-                <h3>Création d'une Base de Données de Gestion d’une Clinique Dentaire</h3>
+                <h3>Création d'une Base de Données de Gestion d'une Clinique Dentaire</h3>
                 <button class="en-savoir-plus" onclick="toggleDetails(10)">En savoir plus</button>
                 <div class="projet-details" id="details-10" style="display:none;">
                     <p>Missions principales :</p>
                     <ul>
-                        <li>Synthèse et communication des résultats</li>
-                        <li>Production d'un rapport de synthèse</li>
-                        <li>Mesure de performances organisationnelles</li>
+                        <li>Modélisation des données et conception du schéma de la base</li>
+                        <li>Structuration et création de la base de données en SQL</li>
+                        <li>Travail en équipe pour répondre aux besoins de gestion de la clinique</li>
                     </ul>
-                    <p>Acquis professionnels : Analyse de données, Communication professionnelle</p>
-                    <p>Explication : Étude des indicateurs de performance de Fleury-Michon, analysant l’évolution du chiffre d’affaires, la rentabilité et la productivité.</p>
-                    <embed src="../projets/P1/perf/Fleury Michon SAE.pdf" type="application/pdf" width="100%" height="240px"/>
+                    <p>Acquis professionnels : Modélisation de données, Programmation SQL, Travail en équipe</p>
+                    <p>Explication : Ce projet consistait à créer une base de données permettant de gérer les informations d'une clinique dentaire, en utilisant SQL pour structurer et organiser les données.</p>
+                    <embed src="../projets/P2/Dentaire/couverture.png" type="image/png" width="100%" height="240px"/>
+                    <p><strong>Livrables :</strong></p>
+                    <a href="../projets/P2/Dentaire/clinique_dentaire.zip" target="_blank">Télécharger le projet</a>
                 </div>
             </div>
         </div>
@@ -262,7 +273,7 @@
         <div class="projet-row odd">
             <img src="../projets/P1/analyse/!!!" alt="Projet 11" class="projet-image">
             <div class="projet-content">
-                <h3>!! EN COUR</h3>
+                <h3>Développement d’un composant d’une solution décisionnelle</h3>
                 <button class="en-savoir-plus" onclick="toggleDetails(11)">En savoir plus</button>
                 <div class="projet-details" id="details-11" style="display:none;">
                     <p>Missions principales :</p>
@@ -272,25 +283,46 @@
                         <li>Automatisation et programmation</li>
                     </ul>
                     <p>Acquis professionnels : Analyse de données, Gestion de projet SCRUM</p>
-                    <p>Explication : Création d'un outil dynamique d'analyse des accidents domestiques en France.</p>
-                    <embed src="../projets/P1/analyse/Rapport SAÉ _Analyse de données, Reporting et Datavisualisation_.pdf" type="application/pdf" width="100%" height="240px"/>
-                    <embed src="../projets/P1/analyse/Tutoriel - Application de Traitement des Données d'Accidents et BD.pdf" type="application/pdf" width="100%" height="240px"/>
-                    <embed src="../projets/P1/analyse/Bilan personnel Camille.pdf" type="application/pdf" width="100%" height="240px"/>
-                    <embed src="../projets/P1/analyse/Data Analysis, Reporting, and Data Visualization.pdf" width="100%" height="240px"/>
-                    <embed src="../projets/P1/analyse/code.txt" width="100%" height="240px"/>
+                    <p>Explication : !!!!!</p>
+                    <embed src="../projets/P2/labo_lias/couverture.png" type="image/png" width="100%" height="240px"/>
                     <p><strong>Livrables :</strong></p>
-                    <a href="../projets/P1/analyse/travail.pbix" target="_blank">Télécharger le projet</a>
+                    <a href="../projets/P2/labo_lias/Note de synthèse.pdf" target="_blank">Télécharger la note de synthèse</a><br>
+                    <a href="../projets/P2/labo_lias/Projet_Bibliometrie_LIAS_BUT2SD.pdf" target="_blank">Télécharger le sujet</a><br>
+                    <a href="../projets/P2/labo_lias/Lias-Bi-projet_grp_2.zip" target="_blank">Télécharger le projet</a>
+
                 </div>
             </div>
         </div>
 
 
         <div class="projet-row even">
-            <img src="../projets/P1/portfolio/portfolio.png" alt="Projet 12" class="projet-image">
+            <img src="../projets/P2/Rshinny/" alt="Projet 12" class="projet-image">
             <div class="projet-content">
-                <h3>Création d'un Portfolio</h3>
+                <h3>Création d'une Base de Données de Gestion d'une Clinique Dentaire</h3>
                 <button class="en-savoir-plus" onclick="toggleDetails(12)">En savoir plus</button>
                 <div class="projet-details" id="details-12" style="display:none;">
+                    <p>Missions principales :</p>
+                    <ul>
+                        <li>Modélisation des données et conception du schéma de la base</li>
+                        <li>Structuration et création de la base de données en SQL</li>
+                        <li>Travail en équipe pour répondre aux besoins de gestion de la clinique</li>
+                    </ul>
+                    <p>Acquis professionnels : Modélisation de données, Programmation SQL, Travail en équipe</p>
+                    <p>Explication : Ce projet consistait à créer une base de données permettant de gérer les informations d'une clinique dentaire, en utilisant SQL pour structurer et organiser les données.</p>
+                    <embed src="../projets/P2/Rshinny/" type="image/png" width="100%" height="240px"/>
+                    <p><strong>Livrables :</strong></p>
+                    <a href="../projets/P2/Rshinny/final.zip" target="_blank">Télécharger le projet</a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="projet-row odd">
+            <img src="../projets/P1/portfolio/folio.jpg" alt="Projet 13" class="projet-image">
+            <div class="projet-content">
+                <h3>Création d'un Portfolio</h3>
+                <button class="en-savoir-plus" onclick="toggleDetails(13)">En savoir plus</button>
+                <div class="projet-details" id="details-13" style="display:none;">
                     <p>Missions principales :</p>
                     <ul>
                         <li>Création d'une interface Web</li>
